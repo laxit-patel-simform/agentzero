@@ -105,8 +105,12 @@ awesome-copilot-opensource/
 ├── agents/
 │   ├── code-review/
 │   │   ├── README.md
-│   │   ├── .github/copilot/        <-- Copilot agent & command definitions
-│   │   └── docs/
+│   │   ├── .github/
+│   │   │   ├── agents/              <-- Copilot agent definitions (*.agent.md)
+│   │   │   ├── prompts/             <-- Copilot commands (*.prompt.md)
+│   │   │   └── instructions/        <-- Context files (*.instructions.md)
+│   │   ├── docs/
+│   │   └── templates/
 │   ├── code-audit/
 │   ├── security-check/
 │   ├── project-estimation/
@@ -120,6 +124,11 @@ awesome-copilot-opensource/
 
 Each agent is self-contained in its own directory with its own README, setup instructions, and Copilot integration files.
 
+**GitHub Copilot conventions:**
+- Agents: `.github/agents/*.agent.md`
+- Prompts/Commands: `.github/prompts/*.prompt.md`
+- Instructions: `.github/instructions/*.instructions.md`
+
 ---
 
 ## Quick Start
@@ -132,8 +141,8 @@ git clone https://github.com/AwesCopilot/awesome-copilot-opensource.git
 cd agents/code-review/
 cat README.md
 
-# 3. Copy the copilot files into your PHP project
-cp -r .github/copilot your-project/.github/
+# 3. Copy the agent files into your PHP project
+cp -r .github/ your-project/.github/
 
 # 4. Use via Copilot in your IDE or PR workflow
 ```
