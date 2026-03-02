@@ -1,0 +1,10 @@
+{
+  "packs": [
+    {
+      "id": "example-php-pack",
+      "name": "Example PHP Agent Pack",
+      "description": "A boilerplate agent pack for PHP developers.",
+      "version": "1.0.0"
+    }
+  ]
+}
