@@ -4,11 +4,11 @@ A collection of high-performance, multi-agent **GitHub Copilot Agent Packs** spe
 
 Designed for professional teams, these agent packs are modular, framework-aware, and built to handle complex tasks like PR reviews, security audits, and architectural evaluations.
 
-## 🚀 Vision: The "SimPrompt" Strategy
+## 🚀 Vision: The "AgentZero" Strategy
 
-Instead of manual copy-pasting, this project is evolving into a **SimPrompt CLI tool** that allows you to:
+Instead of manual copy-pasting, this project is evolving into a **AgentZero CLI tool** that allows you to:
 1.  **Browse** available agent packs.
-2.  **Install** them directly into your project's `.github/` folder.
+2.  **Deploy** them directly into your project's `.github/` folder.
 3.  **Manage** and update them as the community improves the prompts.
 
 ## 🤖 Cross-AI Compatibility
@@ -25,7 +25,7 @@ While optimized for **GitHub Copilot**, these agent packs follow open standards 
 ├── packs/                # PHP Agent Packs (Metadata + Stubs)
 │   ├── example-php-pack/ # Standard Intelligence + Stubs structure
 │   └── ...               # Security, Code Review, etc.
-├── bin/                  # SimPrompt CLI & Verification scripts
+├── bin/                  # AgentZero CLI & Verification scripts
 ├── docs/                 # Architectural Intelligence & Concepts
 ├── ROADMAP.md            # The master plan for PHP expansion
 └── .github/              # Project-level CI/CD & Automations
@@ -43,7 +43,7 @@ Detailed diagrams can be found in [docs/architecture/php-orchestration.md](docs/
 
 ## 🛠️ Installation (Manual)
 
-*Note: SimPrompt CLI is in development.*
+*Note: AgentZero CLI is in development.*
 
 1.  Copy the desired `stubs/.github/` folder from a pack in `packs/`.
 2.  Paste contents into your repository's root `.github/` folder.

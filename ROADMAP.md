@@ -7,13 +7,13 @@
 - [ ] Create `docs/architecture/php-orchestration.md` with **Mermaid diagrams** for visual flow
 - [ ] Implement **Conventional Commits** enforcement (linting commit messages)
 
-## Phase 2: The SimPrompt Script & SSH Showcase 🛠️
-- [ ] Scaffold `simprompt.sh` (Universal Bash Installer)
-- [ ] Implement `list` function (Interactively browse packs locally)
-- [ ] Implement **SimPrompt SSH (Remote CLI):** A TUI served over SSH for pack discovery
-- [ ] Implement `install <pack>` function (Copy Stubs to target `.github/`)
-- [ ] Implement `doctor` function (Check local PHP, Composer, and Git setup)
-- [ ] Support for **Remote Installation** (`curl | bash` or `ssh | sh` patterns)
+## Phase 2: The AgentZero Meta-Agent 🛠️
+- [ ] Scaffold `agentzero.sh` (The initial bootstrapper)
+- [ ] Implement **AgentZero Discover:** Interactively browse packs locally
+- [ ] Implement **AgentZero SSH (Remote Showcase):** A TUI served over SSH
+- [ ] Implement `deploy <pack>` function (Copy Stubs to target `.github/`)
+- [ ] Implement `doctor` function (Check local environment)
+- [ ] **Meta-Agent Automation:** Transition to an AI-driven installer agent
 
 ## Phase 3: PHP Specialized Agent Packs 🐘
 - [ ] Finalize "PHP Code Review" Agent (PSR-12, Laravel/Symfony patterns)

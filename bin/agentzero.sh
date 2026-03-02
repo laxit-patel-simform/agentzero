@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# SimPrompt: The Awesome Copilot Agent Pack Manager (PHP Edition)
-# Usage: ./simprompt.sh [command]
+# AgentZero: The Awesome Copilot Agent Pack Deployer (PHP Edition)
+# Usage: ./agentzero.sh [command]
 
 SET_COLOR_RESET=$(tput sgr0)
 SET_COLOR_PRIMARY=$(tput setaf 4)
@@ -15,12 +15,12 @@ PACKS_DIR="./packs"
 
 function show_logo() {
     echo -e "${SET_COLOR_PURPLE}${SET_COLOR_BOLD}"
-    echo " ███████╗██╗███╗   ███╗██████╗ ██████╗  ██████╗ ███╗   ███╗██████╗ ████████╗"
-    echo " ██╔════╝██║████╗ ████║██╔══██╗██╔══██╗██╔═══██╗████╗ ████║██╔══██╗╚══██╔══╝"
-    echo " ███████╗██║██╔████╔██║██████╔╝██████╔╝██║   ██║██╔████╔██║██████╔╝   ██║   "
-    echo " ╚════██║██║██║╚██╔╝██║██╔═══╝ ██╔══██╗██║   ██║██║╚██╔╝██║██╔═══╝    ██║   "
-    echo " ███████║██║██║ ╚═╝ ██║██║     ██║  ██║╚██████╔╝██║ ╚═╝ ██║██║        ██║   "
-    echo " ╚══════╝╚═╝╚═╝     ╚═╝╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚═╝        ╚═╝   "
+    echo "  █████╗  ██████╗ ███████╗███╗   ██╗████████╗███████╗███████╗██████╗  ██████╗ "
+    echo " ██╔══██╗██╔════╝ ██╔════╝████╗  ██║╚══██╔══╝╚══███╔╝██╔════╝██╔══██╗██╔═══██╗"
+    echo " ███████║██║  ███╗█████╗  ██╔██╗ ██║   ██║     ███╔╝ █████╗  ██████╔╝██║   ██║"
+    echo " ██╔══██║██║   ██║██╔══╝  ██║╚██╗██║   ██║    ███╔╝  ██╔══╝  ██╔══██╗██║   ██║"
+    echo " ██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║   ███████╗███████╗██║  ██║╚██████╔╝"
+    echo " ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ "
     echo -e "${SET_COLOR_RESET}"
 }
 
@@ -29,8 +29,8 @@ function log_success() { echo -e "${SET_COLOR_SUCCESS}success${SET_COLOR_RESET} 
 function log_error() { echo -e "${SET_COLOR_ERROR}error${SET_COLOR_RESET}   $1"; }
 
 function show_help() {
-    echo -e "${SET_COLOR_BOLD}SimPrompt: Agent Pack Deployer${SET_COLOR_RESET}"
-    echo "Usage: ./simprompt.sh [command]"
+    echo -e "${SET_COLOR_BOLD}AgentZero: Meta-Agent Deployer${SET_COLOR_RESET}"
+    echo "Usage: ./agentzero.sh [command]"
     echo ""
     echo "Commands:"
     echo "  list        List all available Agent Packs"
@@ -67,7 +67,7 @@ function list_packs() {
 function deploy_pack() {
     local pack_id=$1
     if [ -z "$pack_id" ]; then
-        log_error "Please specify a pack ID. Usage: ./simprompt.sh deploy <pack-id>"
+        log_error "Please specify a pack ID. Usage: ./agentzero.sh deploy <pack-id>"
         exit 1
     fi
 
@@ -77,7 +77,7 @@ function deploy_pack() {
         exit 1
     fi
 
-    log_info "Deploying $pack_id..."
+    log_info "AgentZero is deploying $pack_id..."
 
     # Check for stubs
     if [ ! -d "$pack_path/stubs/.github" ]; then
@@ -111,7 +111,7 @@ function run_doctor() {
     done
 
     if [ $missing -eq 0 ]; then
-        log_success "Environment is ready for PHP Agent Packs!"
+        log_success "Environment is ready for AgentZero!"
     else
         log_error "Found $missing missing dependencies. Some packs may not function correctly."
     fi

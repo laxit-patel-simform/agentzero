@@ -1,6 +1,6 @@
-# Core Concepts: Intelligence vs. Deploy
+# Core Concepts: Intelligence vs. AgentZero
 
-To understand `awesome-copilot-opensource`, it is helpful to use a classic software engineering analogy: **Intelligence vs. Deploy.**
+To understand `awesome-copilot-opensource`, it is helpful to use a classic software engineering analogy: **Intelligence vs. AgentZero.**
 
 ## 1. The "Intelligence" (Brains & Orchestration)
 The "Core" of this project is the **Intelligence**. This includes:
@@ -18,13 +18,13 @@ Our "Compiled" deliverables are the **Stubs**—standardized files that modern I
 
 We use **Markdown + YAML frontmatter** as our standardized format for these **Stubs** because it is the most widely supported protocol across AI agents.
 
-## 3. The "Deploy" (Delivery & Installation)
+## 3. The "AgentZero" (Discovery & Automation)
 How do these high-value **Stubs** get into a developer's project?
-- **SimPrompt (Primary):** The CLI tool that "deploys" packs, manages versions, and checks for dependencies. It acts as a bridge between our repository and the developer's workspace.
+- **AgentZero (Primary):** The "Root Agent" that automates the deployment of packs, manages versions, and checks for framework compatibility. It acts as an intelligent bridge between our repository and the developer's workspace.
 - **Manual Copy-Paste (Secondary):** A fallback method for users who want to manually integrate specific files.
 
 ## 4. Interoperability (Cross-AI)
-Because our **Intelligence** is decoupled from the **Deploy** and uses a standardized **Stub** format, it is compatible across multiple AI ecosystems:
+Because our **Intelligence** is decoupled from the **AgentZero** automation and uses a standardized **Stub** format, it is compatible across multiple AI ecosystems:
 - **GitHub Copilot** (Native integration)
 - **Gemini CLI** (Instruction injection)
 - **Claude Code / Junie** (Task-based execution)
@@ -32,4 +32,4 @@ Because our **Intelligence** is decoupled from the **Deploy** and uses a standar
 
 ---
 
-**Summary:** We are building **Portable Intelligence for PHP Developers**, with **SimPrompt** as the delivery tool for our **Stubs**.
+**Summary:** We are building **Portable Intelligence for PHP Developers**, with **AgentZero** as the meta-agent for discovering and deploying our **Stubs**.

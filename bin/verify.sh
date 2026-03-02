@@ -15,12 +15,12 @@ function log_step() { echo -e "${SET_COLOR_BOLD}--- $1 ---${SET_COLOR_RESET}"; }
 function log_pass() { echo -e "  ${SET_COLOR_SUCCESS}PASS${SET_COLOR_RESET} $1"; }
 function log_fail() { echo -e "  ${SET_COLOR_ERROR}FAIL${SET_COLOR_RESET} $1"; FAILED=1; }
 
-# 1. Verify SimPrompt Script
-log_step "Verifying SimPrompt Script"
-if bash -n "$(dirname "$0")/simprompt.sh"; then
-    log_pass "simprompt.sh syntax is valid"
+# 1. Verify AgentZero Script
+log_step "Verifying AgentZero Script"
+if bash -n "$(dirname "$0")/agentzero.sh"; then
+    log_pass "agentzero.sh syntax is valid"
 else
-    log_fail "simprompt.sh has syntax errors"
+    log_fail "agentzero.sh has syntax errors"
 fi
 
 # 2. Verify Agent Packs

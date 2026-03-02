@@ -1,7 +1,7 @@
 .PHONY: help list deploy doctor verify
 
 help:
-	@echo "SimPrompt: Awesome Copilot PHP Agent Packs"
+	@echo "AgentZero: Awesome Copilot PHP Agent Packs"
 	@echo "Usage: make [command]"
 	@echo ""
 	@echo "Commands:"
@@ -11,13 +11,13 @@ help:
 	@echo "  verify      Run structural and integrity tests on all packs"
 
 list:
-	@./bin/simprompt.sh list
+	@./bin/agentzero.sh list
 
 deploy:
-	@./bin/simprompt.sh deploy $(PACK)
+	@./bin/agentzero.sh deploy $(PACK)
 
 doctor:
-	@./bin/simprompt.sh doctor
+	@./bin/agentzero.sh doctor
 
 verify:
 	@./bin/verify.sh

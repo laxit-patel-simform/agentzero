@@ -4,7 +4,7 @@
 **Phase 1: Foundation & Standardization** (See [ROADMAP.md](ROADMAP.md))
 - We have established a PHP-centric focus.
 - We have standardized the agent pack structure (including `manifest.json`).
-- We are building the SimPrompt installer (coming soon).
+- We are building AgentZero (coming soon).
 
 ## Core Mandates
 1.  **PHP Focus:** All agents and instructions must prioritize the PHP ecosystem (Laravel/Symfony).
@@ -18,9 +18,9 @@
 ## Technical Preferences
 - **Architecture:** 4-Phase Orchestration (Context -> Parallel Analysis -> Verification -> Risk/Output).
 - **Documentation:** Use Mermaid diagrams in `docs/architecture/` for visual flows.
-- **SimPrompt Installer:** The long-term goal is a CLI-driven "Manager" for these packs.
+- **AgentZero:** The long-term goal is an AI-driven "Installer" for these packs.
 
 ## Ongoing Tasks
 - [ ] Implement the `manifest.json` for all current agents.
 - [ ] Draft the "Phase 0" standard for PHP framework detection.
-- [ ] Prepare for the SimPrompt CLI scaffolding.
+- [ ] Prepare for the AgentZero automation logic.

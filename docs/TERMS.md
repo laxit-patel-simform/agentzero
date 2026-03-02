@@ -19,12 +19,10 @@ This document defines the core terminology used in `awesome-copilot-opensource` 
 - **Software Analogy:** **Asset Templates / Payload** (e.g., `.stub` files in Laravel or Boilerplate).
 - **Location:** `packs/<pack-name>/stubs/`
 
-### 4. Deploy (The Script & SSH Showcase)
-**Definition:** The mechanism used to move **Stubs** from this repository into a developer's project.
-- **Software Analogy:** **Universal Installer Script** (e.g., `curl | bash`) and **Remote CLI Menu**.
-- **Primary Method:** 
-  - **SimPrompt Script (`simprompt.sh`):** The zero-dependency tool for local deployment.
-  - **SimPrompt SSH (`ssh simprompt.com`):** A remote interactive menu for browsing and discovering **Packs**.
+### 4. AgentZero (The Meta-Agent)
+**Definition:** The "Root Agent" responsible for automating the discovery and deployment of **Agent Packs** into a project.
+- **Software Analogy:** **Installer Meta-Agent / Project Bootstrapper**.
+- **Primary Function:** **AgentZero** interviews the user, detects the tech stack (Laravel/Symfony), and dynamically "installs" the correct **Stubs** formatted for the user's specific AI assistant (Copilot, Gemini, etc.).
 
 
 
@@ -49,7 +47,7 @@ This document defines the core terminology used in `awesome-copilot-opensource` 
 | Folder | Developer Analogy | Purpose |
 | :--- | :--- | :--- |
 | `packs/` | `src/` or `lib/` | Source of truth for all **Agent Packs**. |
-| `cli/` | `bin/` or `tools/` | Source code for the **SimPrompt** CLI. |
+| `cli/` | `bin/` or `tools/` | Source code for the **AgentZero** tools. |
 | `docs/` | `docs/` | High-level **Intelligence** architecture. |
 | `samples/` | `examples/` | Example "Consumer" repositories for testing. |
 
