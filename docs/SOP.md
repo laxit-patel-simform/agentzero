@@ -56,6 +56,15 @@ The user doesn't clone this repo. They interact with it remotely:
 curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- list
 ```
 
+**Tip: Deploying from your own fork or branch**
+You can override the source by setting environment variables:
+```bash
+# Example: Deploy from your own personal fork and testing-branch
+export AGENTZERO_USER="your-username"
+export AGENTZERO_BRANCH="testing-branch"
+curl -sSL https://raw.githubusercontent.com/$AGENTZERO_USER/awesome-copilot-opensource/$AGENTZERO_BRANCH/bin/agentzero.sh | bash -s -- list
+```
+
 ### Step 2: Health Check
 Run the "doctor" command to ensure the local environment is ready:
 ```bash

@@ -11,10 +11,10 @@ SET_COLOR_SUCCESS=$(tput setaf 2)
 SET_COLOR_ERROR=$(tput setaf 1)
 SET_COLOR_BOLD=$(tput bold)
 
-# Configuration
-REPO_USER="simform-git"
-REPO_NAME="awesome-copilot-opensource"
-REPO_BRANCH="foundation"
+# Configuration (Overridable via ENV)
+REPO_USER="${AGENTZERO_USER:-simform-git}"
+REPO_NAME="${AGENTZERO_REPO:-awesome-copilot-opensource}"
+REPO_BRANCH="${AGENTZERO_BRANCH:-main}"
 REPO_RAW_URL="https://raw.githubusercontent.com/$REPO_USER/$REPO_NAME/$REPO_BRANCH"
 
 AGENTS_DIR="./agents"
@@ -45,13 +45,19 @@ function show_help() {
     echo -e "${SET_COLOR_BOLD}AgentZero: Meta-Agent Deployer${SET_COLOR_RESET}"
     echo "Usage: ./agentzero.sh [command]"
     echo ""
-    echo "Mode: $MODE"
+    echo "Mode:   $MODE"
+    echo "Source: $REPO_USER/$REPO_NAME ($REPO_BRANCH)"
     echo ""
     echo "Commands:"
     echo "  list        List all available Agents"
     echo "  deploy      Deploy an Agent into the current repository"
     echo "  doctor      Check local environment for dependencies"
     echo "  help        Show this help message"
+    echo ""
+    echo "Environment Variables:"
+    echo "  AGENTZERO_USER    Override GitHub user/org (default: simform-git)"
+    echo "  AGENTZERO_REPO    Override GitHub repository (default: awesome-copilot-opensource)"
+    echo "  AGENTZERO_BRANCH  Override GitHub branch (default: main)"
 }
 
 function list_agents() {
