@@ -17,9 +17,9 @@ This pack provides the following files to be installed into your project root's 
 
 ## Installation
 
-### Method A: Envoy Script (Coming Soon)
+### Method A: SimPrompt Script (Coming Soon)
 ```bash
-envoy.sh install example-php-pack
+simprompt.sh install example-php-pack
 ```
 
 ### Method B: Manual

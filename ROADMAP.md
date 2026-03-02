@@ -7,11 +7,11 @@
 - [ ] Create `docs/architecture/php-orchestration.md` with **Mermaid diagrams** for visual flow
 - [ ] Implement **Conventional Commits** enforcement (linting commit messages)
 
-## Phase 2: The Envoy Script & SSH Showcase 🛠️
-- [ ] Scaffold `envoy.sh` (Universal Bash Installer)
+## Phase 2: The SimPrompt Script & SSH Showcase 🛠️
+- [ ] Scaffold `simprompt.sh` (Universal Bash Installer)
 - [ ] Implement `list` function (Interactively browse packs locally)
-- [ ] Implement **Envoy SSH (Remote CLI):** A TUI served over SSH for pack discovery
-- [ ] Implement `install <pack>` function (Copy Assets to target `.github/`)
+- [ ] Implement **SimPrompt SSH (Remote CLI):** A TUI served over SSH for pack discovery
+- [ ] Implement `install <pack>` function (Copy Stubs to target `.github/`)
 - [ ] Implement `doctor` function (Check local PHP, Composer, and Git setup)
 - [ ] Support for **Remote Installation** (`curl | bash` or `ssh | sh` patterns)
 

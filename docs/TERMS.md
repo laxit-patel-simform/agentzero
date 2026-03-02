@@ -19,12 +19,13 @@ This document defines the core terminology used in `awesome-copilot-opensource` 
 - **Software Analogy:** **Asset Templates / Payload** (e.g., `.stub` files in Laravel or Boilerplate).
 - **Location:** `packs/<pack-name>/stubs/`
 
-### 4. Envoy (The Script & SSH Showcase)
+### 4. Deploy (The Script & SSH Showcase)
 **Definition:** The mechanism used to move **Stubs** from this repository into a developer's project.
-- **Software Analogy:** **Universal Installer Script** (e.g., `curl | bash`) and **Remote CLI Menu** (e.g., `ssh git.charm.sh`).
+- **Software Analogy:** **Universal Installer Script** (e.g., `curl | bash`) and **Remote CLI Menu**.
 - **Primary Method:** 
-  - **Envoy Script (`envoy.sh`):** A zero-dependency Bash script for local installation.
-  - **Envoy SSH (`ssh awesome-copilot.com`):** A remote interactive menu (SSH CLI) for browsing and discovering **Packs** without cloning.
+  - **SimPrompt Script (`simprompt.sh`):** The zero-dependency tool for local deployment.
+  - **SimPrompt SSH (`ssh simprompt.com`):** A remote interactive menu for browsing and discovering **Packs**.
+
 
 
 ### 5. Orchestrator
@@ -48,7 +49,7 @@ This document defines the core terminology used in `awesome-copilot-opensource` 
 | Folder | Developer Analogy | Purpose |
 | :--- | :--- | :--- |
 | `packs/` | `src/` or `lib/` | Source of truth for all **Agent Packs**. |
-| `cli/` | `bin/` or `tools/` | Source code for the **Envoy TUI**. |
+| `cli/` | `bin/` or `tools/` | Source code for the **SimPrompt** CLI. |
 | `docs/` | `docs/` | High-level **Intelligence** architecture. |
 | `samples/` | `examples/` | Example "Consumer" repositories for testing. |
 

@@ -4,9 +4,9 @@ A collection of high-performance, multi-agent **GitHub Copilot Agent Packs** spe
 
 Designed for professional teams, these agent packs are modular, framework-aware, and built to handle complex tasks like PR reviews, security audits, and architectural evaluations.
 
-## 🚀 Vision: The "Manager" Strategy
+## 🚀 Vision: The "SimPrompt" Strategy
 
-Instead of manual copy-pasting, this project is evolving into a **TUI (Terminal User Interface) CLI tool** that allows you to:
+Instead of manual copy-pasting, this project is evolving into a **SimPrompt CLI tool** that allows you to:
 1.  **Browse** available agent packs.
 2.  **Install** them directly into your project's `.github/` folder.
 3.  **Manage** and update them as the community improves the prompts.
@@ -22,12 +22,11 @@ While optimized for **GitHub Copilot**, these agent packs follow open standards 
 
 ```
 /
-├── agents/               # PHP Agent Packs (Metadata + Agent Files)
-│   ├── code-review/      # PR Review Suite (Parallel Orchestration)
-│   ├── security-audit/   # OWASP-based Security Scanning
-│   └── ...               # Architect, Estimation, etc.
-├── cli/                  # (Coming Soon) TUI Installer source code
-├── docs/                 # Architectural Documentation & Mermaid Diagrams
+├── packs/                # PHP Agent Packs (Metadata + Stubs)
+│   ├── example-php-pack/ # Standard Intelligence + Stubs structure
+│   └── ...               # Security, Code Review, etc.
+├── bin/                  # SimPrompt CLI & Verification scripts
+├── docs/                 # Architectural Intelligence & Concepts
 ├── ROADMAP.md            # The master plan for PHP expansion
 └── .github/              # Project-level CI/CD & Automations
 ```
@@ -44,10 +43,10 @@ Detailed diagrams can be found in [docs/architecture/php-orchestration.md](docs/
 
 ## 🛠️ Installation (Manual)
 
-*Note: TUI Installer is in development.*
+*Note: SimPrompt CLI is in development.*
 
-1.  Copy the desired agent folder from `agents/`.
-2.  Paste contents into your repository's `.github/` folder.
+1.  Copy the desired `stubs/.github/` folder from a pack in `packs/`.
+2.  Paste contents into your repository's root `.github/` folder.
 3.  Ensure you have a `project-constitution.md` in your root for custom rules.
 
 ## 🤝 Contributing

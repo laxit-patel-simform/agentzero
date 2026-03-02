@@ -1,27 +1,40 @@
 #!/usr/bin/env bash
 
-# Envoy: The Awesome Copilot Agent Pack Manager (PHP Edition)
-# Usage: ./envoy.sh [command]
+# SimPrompt: The Awesome Copilot Agent Pack Manager (PHP Edition)
+# Usage: ./simprompt.sh [command]
 
 SET_COLOR_RESET=$(tput sgr0)
 SET_COLOR_PRIMARY=$(tput setaf 4)
+SET_COLOR_PURPLE=$(tput setaf 5)
+SET_COLOR_CYAN=$(tput setaf 6)
 SET_COLOR_SUCCESS=$(tput setaf 2)
 SET_COLOR_ERROR=$(tput setaf 1)
 SET_COLOR_BOLD=$(tput bold)
 
 PACKS_DIR="./packs"
 
-function log_info() { echo -e "${SET_COLOR_PRIMARY}info${SET_COLOR_RESET}  $1"; }
+function show_logo() {
+    echo -e "${SET_COLOR_PURPLE}${SET_COLOR_BOLD}"
+    echo " ███████╗██╗███╗   ███╗██████╗ ██████╗  ██████╗ ███╗   ███╗██████╗ ████████╗"
+    echo " ██╔════╝██║████╗ ████║██╔══██╗██╔══██╗██╔═══██╗████╗ ████║██╔══██╗╚══██╔══╝"
+    echo " ███████╗██║██╔████╔██║██████╔╝██████╔╝██║   ██║██╔████╔██║██████╔╝   ██║   "
+    echo " ╚════██║██║██║╚██╔╝██║██╔═══╝ ██╔══██╗██║   ██║██║╚██╔╝██║██╔═══╝    ██║   "
+    echo " ███████║██║██║ ╚═╝ ██║██║     ██║  ██║╚██████╔╝██║ ╚═╝ ██║██║        ██║   "
+    echo " ╚══════╝╚═╝╚═╝     ╚═╝╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚═╝        ╚═╝   "
+    echo -e "${SET_COLOR_RESET}"
+}
+
+function log_info() { echo -e "${SET_COLOR_CYAN}info${SET_COLOR_RESET}  $1"; }
 function log_success() { echo -e "${SET_COLOR_SUCCESS}success${SET_COLOR_RESET} $1"; }
 function log_error() { echo -e "${SET_COLOR_ERROR}error${SET_COLOR_RESET}   $1"; }
 
 function show_help() {
-    echo -e "${SET_COLOR_BOLD}Envoy: Agent Pack Manager${SET_COLOR_RESET}"
-    echo "Usage: ./envoy.sh [command]"
+    echo -e "${SET_COLOR_BOLD}SimPrompt: Agent Pack Deployer${SET_COLOR_RESET}"
+    echo "Usage: ./simprompt.sh [command]"
     echo ""
     echo "Commands:"
     echo "  list        List all available Agent Packs"
-    echo "  install     Install an Agent Pack into the current repository"
+    echo "  deploy      Deploy an Agent Pack into the current repository"
     echo "  doctor      Check local environment for dependencies"
     echo "  help        Show this help message"
 }
@@ -51,10 +64,10 @@ function list_packs() {
     echo ""
 }
 
-function install_pack() {
+function deploy_pack() {
     local pack_id=$1
     if [ -z "$pack_id" ]; then
-        log_error "Please specify a pack ID. Usage: ./envoy.sh install <pack-id>"
+        log_error "Please specify a pack ID. Usage: ./simprompt.sh deploy <pack-id>"
         exit 1
     fi
 
@@ -64,7 +77,7 @@ function install_pack() {
         exit 1
     fi
 
-    log_info "Installing $pack_id..."
+    log_info "Deploying $pack_id..."
 
     # Check for stubs
     if [ ! -d "$pack_path/stubs/.github" ]; then
@@ -78,7 +91,7 @@ function install_pack() {
     # Copy files
     cp -rv "$pack_path/stubs/.github/." .github/
     
-    log_success "Pack '$pack_id' installed successfully into .github/"
+    log_success "Pack '$pack_id' deployed successfully into .github/"
     echo "Next steps: Restart your IDE's AI assistant to load the new agents and prompts."
 }
 
@@ -104,12 +117,14 @@ function run_doctor() {
     fi
 }
 
+show_logo
+
 case "$1" in
     list)
         list_packs
         ;;
-    install)
-        install_pack "$2"
+    deploy)
+        deploy_pack "$2"
         ;;
     doctor)
         run_doctor
