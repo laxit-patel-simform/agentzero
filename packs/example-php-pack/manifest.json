@@ -1,0 +1,21 @@
+{
+  "id": "example-php-pack",
+  "name": "Example PHP Agent Pack",
+  "version": "1.0.0",
+  "description": "A boilerplate agent pack for PHP developers. Demonstrates the Intelligence + Stubs architecture.",
+  "category": "Education",
+  "ecosystem": "PHP",
+  "frameworks": ["Laravel", "Symfony"],
+  "compatibility": {
+    "php": ">=8.1",
+    "copilot": "latest"
+  },
+  "files": {
+    "agents": [".github/agents/example.agent.md"],
+    "prompts": [".github/prompts/example.prompt.md"],
+    "instructions": [".github/instructions/example.instructions.md"]
+  },
+  "dependencies": {
+    "cli": ["gh", "php"]
+  }
+}
