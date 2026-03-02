@@ -14,7 +14,7 @@ SET_COLOR_BOLD=$(tput bold)
 # Configuration
 REPO_USER="simform-git"
 REPO_NAME="awesome-copilot-opensource"
-REPO_BRANCH="main"
+REPO_BRANCH="foundation"
 REPO_RAW_URL="https://raw.githubusercontent.com/$REPO_USER/$REPO_NAME/$REPO_BRANCH"
 
 PACKS_DIR="./packs"
