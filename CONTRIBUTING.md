@@ -21,10 +21,10 @@ make doctor
 
 ## 🏗️ Workflow: Intelligence Engineering (SOP)
 
-1.  **Initialize Pack:** Create a folder in `packs/` (e.g., `packs/php-testing/`).
-2.  **Scaffold Stubs:** Every pack must have a `stubs/` directory mirroring the target `.github/` structure.
-3.  **Define Manifest:** Fill out `packs/<id>/manifest.json` with metadata.
-4.  **Register:** Add your pack to the root `registry.json`.
+1.  **Initialize Agent:** Create a folder in `agents/` (e.g., `agents/php-testing/`).
+2.  **Scaffold Stubs:** Every agent must have a `stubs/` directory mirroring the target `.github/` structure.
+3.  **Define Manifest:** Fill out `agents/<id>/manifest.json` with metadata.
+4.  **Register:** Add your agent to the root `registry.json`.
 5.  **Verify:** Run `make verify` to ensure structural integrity.
 
 Detailed SOP available at: **[docs/SOP.md](docs/SOP.md)**.

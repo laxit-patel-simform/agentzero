@@ -49,14 +49,25 @@ for agent_dir in agents/*; do
         for f in $files; do
             stub_path="$agent_dir/stubs/$f"
             if [ -f "$stub_path" ]; then
-                log_pass "  Found stub: $f"
+                # Verify YAML frontmatter in markdown files
                 if [[ "$f" == *.md ]]; then
-                    if head -n 1 "$stub_path" | grep -q "^---$"; then
+                    # Extract content between first two --- lines
+                    frontmatter=$(sed -n '/^---$/,/^---$/p' "$stub_path" | sed '1d;$d')
+                    if [ -n "$frontmatter" ]; then
                         log_pass "    Frontmatter detected in $f"
+
+                        # Basic YAML structural check using PHP (checking for invalid list syntax etc)
+                        # We look for unquoted commas which are common errors in YAML lists not using []
+                        if echo "$frontmatter" | grep -q ".*: .*,.*" && ! echo "$frontmatter" | grep -q ".*: \[.*\]"; then
+                            log_fail "    Invalid YAML syntax in $f: suspected unquoted list (use [item1, item2])"
+                        else
+                            log_pass "    Frontmatter structure looks valid"
+                        fi
                     else
                         log_fail "    Frontmatter MISSING in $f"
                     fi
                 fi
+
             else
                 log_fail "  Missing stub file: $f (expected at $stub_path)"
             fi

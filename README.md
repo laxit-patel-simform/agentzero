@@ -43,14 +43,23 @@ graph LR
 
 ## 🚀 Quick Start (Deployment)
 
-You don't need to clone this repo to start using these agents. Just run:
-
+### 🛡️ Recommended (Safer)
+Download, review, and execute the AgentZero bootstrapper:
 ```bash
-# 1. Browse Available Intelligence
-curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- list
+# 1. Download the script
+curl -sSLo agentzero.sh https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh
+chmod +x agentzero.sh
 
-# 2. Deploy an Agent (e.g., Code Review)
-curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- deploy php-code-review
+# 2. Browse available intelligence
+./agentzero.sh list
+
+# 3. Deploy an agent (e.g., Code Review)
+./agentzero.sh deploy php-code-review
+```
+
+### ⚡ One-Liner (Convenient)
+```bash
+curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- list
 ```
 
 ---

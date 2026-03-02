@@ -17,9 +17,9 @@ This pack provides the following files to be installed into your project root's 
 
 ## Installation
 
-### Method A: SimPrompt Script (Coming Soon)
+### Method A: AgentZero CLI
 ```bash
-simprompt.sh install example-php-pack
+bin/agentzero.sh deploy example-php-agent
 ```
 
 ### Method B: Manual

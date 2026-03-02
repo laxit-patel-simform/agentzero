@@ -1,18 +1,18 @@
 # Roadmap: `simform-git/awesome-copilot-opensource` (PHP Edition)
 
 ## Phase 1: Core PHP Standardization 🏗️
-- [ ] Define `manifest.json` schema for PHP Agent Packs (Metadata, Frameworks)
-- [ ] Refactor `agents/` folder to match the PHP-centric standard structure
+- [x] Define `manifest.json` schema for PHP Agents (Metadata, Frameworks)
+- [x] Refactor `agents/` folder to match the PHP-centric standard structure
 - [ ] Standardize "Phase 0" (Context Extraction) for PHP (Laravel/Symfony)
-- [ ] Create `docs/architecture/php-orchestration.md` with **Mermaid diagrams** for visual flow
-- [ ] Implement **Conventional Commits** enforcement (linting commit messages)
+- [x] Create `docs/architecture/php-orchestration.md` with **Mermaid diagrams** for visual flow
+- [x] Implement **Conventional Commits** enforcement (linting commit messages)
 
 ## Phase 2: The AgentZero Meta-Agent 🛠️
-- [ ] Scaffold `agentzero.sh` (The initial bootstrapper)
-- [ ] Implement **AgentZero Discover:** Interactively browse packs locally
+- [x] Scaffold `agentzero.sh` (The initial bootstrapper)
+- [x] Implement **AgentZero Discover:** Interactively browse agents locally
 - [ ] Implement **AgentZero SSH (Remote Showcase):** A TUI served over SSH
-- [ ] Implement `deploy <pack>` function (Copy Stubs to target `.github/`)
-- [ ] Implement `doctor` function (Check local environment)
+- [x] Implement `deploy <agent>` function (Copy Stubs to target `.github/`)
+- [x] Implement `doctor` function (Check local environment & Project Identity)
 - [ ] **Meta-Agent Automation:** Transition to an AI-driven installer agent
 
 ## Phase 3: PHP Specialized Agent Packs 🐘
