@@ -1,8 +1,8 @@
 {
-  "id": "example-php-pack",
-  "name": "Example PHP Agent Pack",
+  "id": "example-php-agent",
+  "name": "Example PHP Agent",
   "version": "1.0.0",
-  "description": "A boilerplate agent pack for PHP developers. Demonstrates the Intelligence + Stubs architecture.",
+  "description": "A boilerplate agent for PHP developers. Demonstrates the Intelligence + Stubs architecture.",
   "category": "Education",
   "ecosystem": "PHP",
   "frameworks": ["Laravel", "Symfony"],

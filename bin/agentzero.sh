@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# AgentZero: The Awesome Copilot Agent Pack Deployer (PHP Edition)
+# AgentZero: The Awesome Copilot Agent Deployer (PHP Edition)
 # Usage: ./agentzero.sh [command]
 
 SET_COLOR_RESET=$(tput sgr0)
@@ -17,10 +17,10 @@ REPO_NAME="awesome-copilot-opensource"
 REPO_BRANCH="foundation"
 REPO_RAW_URL="https://raw.githubusercontent.com/$REPO_USER/$REPO_NAME/$REPO_BRANCH"
 
-PACKS_DIR="./packs"
+AGENTS_DIR="./agents"
 
 # Detect Mode
-if [ -d "$PACKS_DIR" ]; then
+if [ -d "$AGENTS_DIR" ]; then
     MODE="DEV"
 else
     MODE="REMOTE"
@@ -48,18 +48,18 @@ function show_help() {
     echo "Mode: $MODE"
     echo ""
     echo "Commands:"
-    echo "  list        List all available Agent Packs"
-    echo "  deploy      Deploy an Agent Pack into the current repository"
+    echo "  list        List all available Agents"
+    echo "  deploy      Deploy an Agent into the current repository"
     echo "  doctor      Check local environment for dependencies"
     echo "  help        Show this help message"
 }
 
-function list_packs() {
+function list_agents() {
     if [ "$MODE" == "DEV" ]; then
-        log_info "Developer Mode: Scanning local $PACKS_DIR..."
+        log_info "Developer Mode: Scanning local $AGENTS_DIR..."
         printf "%-25s %-10s %-40s\n" "ID" "VERSION" "DESCRIPTION"
         echo "--------------------------------------------------------------------------------"
-        for d in $PACKS_DIR/*; do
+        for d in $AGENTS_DIR/*; do
             if [ -d "$d" ] && [ -f "$d/manifest.json" ]; then
                 local id=$(basename "$d")
                 php -r "\$m = json_decode(file_get_contents('$d/manifest.json'), true); printf(\"${SET_COLOR_BOLD}%-25s${SET_COLOR_RESET} %-10s %-40s\n\", '$id', \$m['version'] ?? '', \$m['description'] ?? '');"
@@ -75,29 +75,29 @@ function list_packs() {
 
         printf "%-25s %-10s %-40s\n" "ID" "VERSION" "DESCRIPTION"
         echo "--------------------------------------------------------------------------------"
-        php -r "\$r = json_decode('$registry_json', true); if (isset(\$r['packs'])) { foreach (\$r['packs'] as \$p) { printf(\"${SET_COLOR_BOLD}%-25s${SET_COLOR_RESET} %-10s %-40s\n\", \$p['id'], \$p['version'], \$p['description']); } }"
+        php -r "\$r = json_decode('$registry_json', true); if (isset(\$r['agents'])) { foreach (\$r['agents'] as \$a) { printf(\"${SET_COLOR_BOLD}%-25s${SET_COLOR_RESET} %-10s %-40s\n\", \$a['id'], \$a['version'], \$a['description']); } }"
     fi
     echo ""
 }
 
-function deploy_pack() {
-    local pack_id=$1
-    if [ -z "$pack_id" ]; then
-        log_error "Please specify a pack ID. Usage: ./agentzero.sh deploy <pack-id>"
+function deploy_agent() {
+    local agent_id=$1
+    if [ -z "$agent_id" ]; then
+        log_error "Please specify an agent ID. Usage: ./agentzero.sh deploy <agent-id>"
         exit 1
     fi
 
     if [ "$MODE" == "DEV" ]; then
-        local pack_path="$PACKS_DIR/$pack_id"
-        log_info "Developer Mode: Deploying from $pack_path..."
-        if [ ! -d "$pack_path" ]; then log_error "Pack '$pack_id' not found."; exit 1; fi
+        local agent_path="$AGENTS_DIR/$agent_id"
+        log_info "Developer Mode: Deploying from $agent_path..."
+        if [ ! -d "$agent_path" ]; then log_error "Agent '$agent_id' not found."; exit 1; fi
         mkdir -p .github
-        cp -rv "$pack_path/stubs/.github/." .github/
+        cp -rv "$agent_path/stubs/.github/." .github/
     else
-        log_info "Remote Mode: Deploying $pack_id from $REPO_RAW_URL..."
-        local manifest_json=$(curl -sSL "$REPO_RAW_URL/packs/$pack_id/manifest.json")
+        log_info "Remote Mode: Deploying $agent_id from $REPO_RAW_URL..."
+        local manifest_json=$(curl -sSL "$REPO_RAW_URL/agents/$agent_id/manifest.json")
         if [ $? -ne 0 ] || [ -z "$manifest_json" ]; then
-            log_error "Could not find manifest for pack '$pack_id' on GitHub."
+            log_error "Could not find manifest for agent '$agent_id' on GitHub."
             exit 1
         fi
 
@@ -108,11 +108,7 @@ function deploy_pack() {
             log_info "  Downloading $f..."
             local target_dir=$(dirname ".github/$f")
             mkdir -p "$target_dir"
-            
-            # Use curl to fetch the stub
-            # Paths in manifest are like .github/agents/...
-            # Remote paths are packs/<id>/stubs/.github/agents/...
-            curl -sSL "$REPO_RAW_URL/packs/$pack_id/stubs/$f" -o ".github/$f"
+            curl -sSL "$REPO_RAW_URL/agents/$agent_id/stubs/$f" -o ".github/$f"
             
             if [ $? -eq 0 ]; then
                 log_success "    Successfully downloaded $f"
@@ -122,7 +118,7 @@ function deploy_pack() {
         done
     fi
 
-    log_success "Pack '$pack_id' deployed successfully into .github/"
+    log_success "Agent '$agent_id' deployed successfully into .github/"
     echo "Next steps: Restart your IDE's AI assistant to load the new agents and prompts."
 }
 
@@ -143,7 +139,7 @@ function run_doctor() {
     if [ $missing -eq 0 ]; then
         log_success "Environment is ready for AgentZero!"
     else
-        log_error "Found $missing missing dependencies. Some packs may not function correctly."
+        log_error "Found $missing missing dependencies. Some agents may not function correctly."
     fi
 }
 
@@ -151,10 +147,10 @@ show_logo
 
 case "$1" in
     list)
-        list_packs
+        list_agents
         ;;
     deploy)
-        deploy_pack "$2"
+        deploy_agent "$2"
         ;;
     doctor)
         run_doctor

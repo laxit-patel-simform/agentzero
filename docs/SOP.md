@@ -5,7 +5,7 @@ This document outlines the two primary workflows of the `awesome-copilot-opensou
 ---
 
 ## 🏗️ SOP: Intelligence Engineering (The Contributor)
-*Goal: Build, refine, and ship a high-quality Agent Pack for the PHP community.*
+*Goal: Build, refine, and ship a high-quality Agent for the PHP community.*
 
 ```mermaid
 sequenceDiagram
@@ -13,7 +13,7 @@ sequenceDiagram
     participant R as AgentZero Repo
     participant V as Verify (CI/CD)
     
-    E->>R: Scaffold packs/<id>/
+    E->>R: Scaffold agents/<id>/
     E->>R: Write Stubs (Agents, Prompts)
     E->>R: Register in manifest.json & registry.json
     E->>V: Run make verify
@@ -21,23 +21,23 @@ sequenceDiagram
     E->>R: Push to main
 ```
 
-1.  **Initialize Pack:** Create a folder in `packs/` (e.g., `packs/php-testing/`).
+1.  **Initialize Agent:** Create a folder in `agents/` (e.g., `agents/php-testing/`).
 2.  **Scaffold Structure:** Create the mandatory sub-directories:
-    - `packs/<id>/manifest.json`
-    - `packs/<id>/stubs/.github/agents/`
-    - `packs/<id>/stubs/.github/prompts/`
-    - `packs/<id>/stubs/.github/instructions/`
+    - `agents/<id>/manifest.json`
+    - `agents/<id>/stubs/.github/agents/`
+    - `agents/<id>/stubs/.github/prompts/`
+    - `agents/<id>/stubs/.github/instructions/`
 3.  **Engineer Intelligence:** Write the expert prompts and orchestration logic in the markdown files within `stubs/`.
 4.  **Register:**
     - Fill out the `manifest.json` with metadata and file lists.
-    - Add the pack ID and details to the root `registry.json`.
+    - Add the agent ID and details to the root `registry.json`.
 5.  **Verify Integrity:** Run `make verify` from the project root. All tests must pass.
 6.  **Merge:** Submit a PR using **Conventional Commits** style.
 
 ---
 
 ## 🚀 SOP: Consumer Deployment (The User)
-*Goal: Activate AgentZero and deploy a specific Intelligence Pack into your PHP project.*
+*Goal: Activate AgentZero and deploy a specific Intelligence Agent into your PHP project.*
 
 ```mermaid
 graph TD
@@ -63,9 +63,9 @@ curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensour
 ```
 
 ### Step 3: Deploy
-Choose a pack ID from the list and deploy it into your project's `.github/` folder:
+Choose an agent ID from the list and deploy it into your project's `.github/` folder:
 ```bash
-curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- deploy <pack-id>
+curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- deploy <agent-id>
 ```
 
 ### Step 4: Activate

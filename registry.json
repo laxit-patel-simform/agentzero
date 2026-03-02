@@ -1,9 +1,9 @@
 {
-  "packs": [
+  "agents": [
     {
-      "id": "example-php-pack",
-      "name": "Example PHP Agent Pack",
-      "description": "A boilerplate agent pack for PHP developers.",
+      "id": "example-php-agent",
+      "name": "Example PHP Agent",
+      "description": "A boilerplate agent for PHP developers.",
       "version": "1.0.0"
     }
   ]
