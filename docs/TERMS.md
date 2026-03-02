@@ -38,9 +38,10 @@ This document defines the core terminology used in `awesome-copilot-opensource` 
 **Definition:** The step where the AI detects the project's framework and rules.
 - **Software Analogy:** **Environment Bootstrapping / Dependency Injection**. Setting up the context before execution begins.
 
-### 8. Phase 2 (Hallucination Verification)
-**Definition:** A mandatory step where an independent agent verifies findings against the PR diff.
-- **Software Analogy:** **Unit Testing / Assertions**. A safety layer that ensures the output is correct before it is "shipped" to the user.
+### 9. Intelligence Engineer
+**Definition:** A developer who specializes in building, refining, and testing the **Intelligence** (prompts, rules, and orchestration logic) for Agent Packs.
+- **Role:** They are the primary contributors to this repository. They don't just write code; they engineer the "Brains" that tell AI how to handle complex PHP tasks.
+- **Tools:** They use `make verify` and standard PHP development tools to ensure their Intelligence is accurate and structurally sound.
 
 ## Folder Taxonomy
 

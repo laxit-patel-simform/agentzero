@@ -1,18 +1,25 @@
+```text
+  █████╗  ██████╗ ███████╗███╗   ██╗████████╗███████╗███████╗██████╗  ██████╗ 
+ ██╔══██╗██╔════╝ ██╔════╝████╗  ██║╚══██╔══╝╚══███╔╝██╔════╝██╔══██╗██╔═══██╗
+ ███████║██║  ███╗█████╗  ██╔██╗ ██║   ██║     ███╔╝ █████╗  ██████╔╝██║   ██║
+ ██╔══██║██║   ██║██╔══╝  ██║╚██╗██║   ██║    ███╔╝  ██╔══╝  ██╔══██╗██║   ██║
+ ██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║   ███████╗███████╗██║  ██║╚██████╔╝
+ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ 
+```
+
 # Awesome Copilot Open Source (PHP Edition) 🐘
 
-A collection of high-performance, multi-agent **GitHub Copilot Agent Packs** specifically engineered for the **PHP (Laravel/Symfony)** ecosystem.
+A collection of high-performance, multi-agent **Intelligence Packs** specifically engineered for the **PHP (Laravel/Symfony)** ecosystem.
 
-Designed for professional teams, these agent packs are modular, framework-aware, and built to handle complex tasks like PR reviews, security audits, and architectural evaluations.
+Designed for professional teams, these packs are modular, framework-aware, and built to handle complex tasks like PR reviews, security audits, and architectural evaluations.
 
-## 🚀 Vision: The "AgentZero" Strategy
+## 🚀 Vision: The AgentZero Meta-Agent
 
-Instead of manual copy-pasting, this project is evolving into a **AgentZero CLI tool** that allows you to:
-1.  **Browse** available agent packs.
-2.  **Deploy** them directly into your project's `.github/` folder.
-3.  **Manage** and update them as the community improves the prompts.
+Instead of manual copy-pasting, this project uses **AgentZero**—an intelligent meta-agent that automates the discovery and deployment of specialized **Intelligence** into your repository.
 
 ## 🤖 Cross-AI Compatibility
-While optimized for **GitHub Copilot**, these agent packs follow open standards (Markdown + YAML frontmatter) and are compatible with other modern AI coding assistants, including:
+Our **Intelligence** follows standardized Markdown/YAML formats and is compatible with:
+- **GitHub Copilot**
 - **Gemini CLI**
 - **Claude Code**
 - **Junie**
@@ -22,12 +29,13 @@ While optimized for **GitHub Copilot**, these agent packs follow open standards 
 
 ```
 /
-├── packs/                # PHP Agent Packs (Metadata + Stubs)
-│   ├── example-php-pack/ # Standard Intelligence + Stubs structure
+├── packs/                # Source of truth for Agent Packs (Intelligence + Stubs)
+│   ├── example-php-pack/ # Boilerplate pack
 │   └── ...               # Security, Code Review, etc.
 ├── bin/                  # AgentZero CLI & Verification scripts
-├── docs/                 # Architectural Intelligence & Concepts
+├── docs/                 # Architectural Intelligence, Concepts & SOPs
 ├── ROADMAP.md            # The master plan for PHP expansion
+├── registry.json         # The central discovery registry
 └── .github/              # Project-level CI/CD & Automations
 ```
 
@@ -41,13 +49,25 @@ All our advanced agents follow a standardized orchestration flow to ensure speed
 
 Detailed diagrams can be found in [docs/architecture/php-orchestration.md](docs/architecture/php-orchestration.md).
 
-## 🛠️ Installation (Manual)
+## 🚀 Getting Started (SOP)
 
-*Note: AgentZero CLI is in development.*
+For detailed workflows, see **[Standard Operating Procedures (SOP)](docs/SOP.md)**.
 
-1.  Copy the desired `stubs/.github/` folder from a pack in `packs/`.
-2.  Paste contents into your repository's root `.github/` folder.
-3.  Ensure you have a `project-constitution.md` in your root for custom rules.
+### For Users (Zero-Cloning Deploy)
+```bash
+# List available packs
+curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- list
+
+# Deploy a pack
+curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- deploy php-code-review
+```
+
+### For Intelligence Engineers (Contributors)
+```bash
+git clone https://github.com/simform-git/awesome-copilot-opensource.git
+make help
+make verify
+```
 
 ## 🤝 Contributing
 
