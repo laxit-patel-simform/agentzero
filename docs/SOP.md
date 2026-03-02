@@ -7,7 +7,21 @@ This document outlines the two primary workflows of the `awesome-copilot-opensou
 ## 🏗️ SOP: Intelligence Engineering (The Contributor)
 *Goal: Build, refine, and ship a high-quality Agent Pack for the PHP community.*
 
-1.  **Initialize Pack:** Create a new folder in `packs/` (e.g., `packs/php-testing/`).
+```mermaid
+sequenceDiagram
+    participant E as Intelligence Engineer
+    participant R as AgentZero Repo
+    participant V as Verify (CI/CD)
+    
+    E->>R: Scaffold packs/<id>/
+    E->>R: Write Stubs (Agents, Prompts)
+    E->>R: Register in manifest.json & registry.json
+    E->>V: Run make verify
+    V-->>E: Pass/Fail
+    E->>R: Push to main
+```
+
+1.  **Initialize Pack:** Create a folder in `packs/` (e.g., `packs/php-testing/`).
 2.  **Scaffold Structure:** Create the mandatory sub-directories:
     - `packs/<id>/manifest.json`
     - `packs/<id>/stubs/.github/agents/`
@@ -24,6 +38,17 @@ This document outlines the two primary workflows of the `awesome-copilot-opensou
 
 ## 🚀 SOP: Consumer Deployment (The User)
 *Goal: Activate AgentZero and deploy a specific Intelligence Pack into your PHP project.*
+
+```mermaid
+graph TD
+    A[User Project] --> B{AgentZero Remote}
+    B -->|Fetch Registry| C[registry.json]
+    B -->|Fetch Intelligence| D[manifest.json]
+    B -->|Fetch Assets| E[Stubs]
+    E -->|Deploy| A
+    A --> F[Restart IDE Assistant]
+    F --> G[Project-Aware AI Ready]
+```
 
 ### Step 1: Discover (Remote Call)
 The user doesn't clone this repo. They interact with it remotely:

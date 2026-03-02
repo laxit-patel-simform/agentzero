@@ -9,66 +9,61 @@
 
 # Awesome Copilot Open Source (PHP Edition) 🐘
 
-A collection of high-performance, multi-agent **Intelligence Packs** specifically engineered for the **PHP (Laravel/Symfony)** ecosystem.
+Elevate your PHP development with expert-engineered **Intelligence Packs**. Seamlessly deploy advanced multi-agent workflows into your IDE (VS Code, Cursor, etc.) to automate PR reviews, security audits, and architectural evaluations.
 
-Designed for professional teams, these packs are modular, framework-aware, and built to handle complex tasks like PR reviews, security audits, and architectural evaluations.
+## 🚀 The Value: Why AgentZero?
 
-## 🚀 Vision: The AgentZero Meta-Agent
+Most AI assistants are generic. **AgentZero** delivers **context-aware expertise** specifically for the Laravel and Symfony ecosystems.
 
-Instead of manual copy-pasting, this project uses **AgentZero**—an intelligent meta-agent that automates the discovery and deployment of specialized **Intelligence** into your repository.
-
-## 🤖 Cross-AI Compatibility
-Our **Intelligence** follows standardized Markdown/YAML formats and is compatible with:
-- **GitHub Copilot**
-- **Gemini CLI**
-- **Claude Code**
-- **Junie**
-- **Cursor**
-
-## 📂 Repository Structure
-
-```
-/
-├── packs/                # Source of truth for Agent Packs (Intelligence + Stubs)
-│   ├── example-php-pack/ # Boilerplate pack
-│   └── ...               # Security, Code Review, etc.
-├── bin/                  # AgentZero CLI & Verification scripts
-├── docs/                 # Architectural Intelligence, Concepts & SOPs
-├── ROADMAP.md            # The master plan for PHP expansion
-├── registry.json         # The central discovery registry
-└── .github/              # Project-level CI/CD & Automations
+```mermaid
+graph LR
+    A[Fresh PHP Project] --> B{AgentZero Meta-Agent}
+    B -->|Deploy Intelligence| C[PR Reviewer Pack]
+    B -->|Deploy Intelligence| D[Security Audit Pack]
+    B -->|Deploy Intelligence| E[Architecture Pack]
+    C --> F[Native IDE Assistance]
+    D --> F
+    E --> F
+    F --> G[10x Higher Review Quality]
 ```
 
-## 🏗️ Architecture: The 4-Phase Pipeline
+### Key Benefits:
+- **Expert-Level Guardrails:** Enforce PSR-12, modern PHP patterns, and framework-specific "Project Constitutions."
+- **Reduced Hallucinations:** Multi-agent verification ensures every AI claim is backed by real code evidence.
+- **Unified Workflow:** One command to "arm" your repository with multiple specialized agents.
+- **Cross-AI Ready:** Use the same high-quality logic across Copilot, Gemini, Claude, and more.
 
-All our advanced agents follow a standardized orchestration flow to ensure speed and accuracy:
-1.  **Phase 0: Context Extraction** (PHP Framework detection)
-2.  **Phase 1: Parallel Analysis** (Specialized sub-agents)
-3.  **Phase 2: Hallucination Verification** (Evidence-based checking)
-4.  **Phase 3: Risk Scoring & Output** (Actionable reports)
+## 🤖 Capabilities (Current Intelligence)
 
-Detailed diagrams can be found in [docs/architecture/php-orchestration.md](docs/architecture/php-orchestration.md).
+- **🔍 Intelligent PR Review:** 4-phase automated review with hallucination detection and risk scoring.
+- **🛡️ PHP Security Audit:** Reading-focused scanning for OWASP vulnerabilities and framework anti-patterns.
+- **🏛️ Enterprise Architect:** Automated evaluation of architectural drift and ADR compliance.
 
-## 🚀 Getting Started (SOP)
+---
 
-For detailed workflows, see **[Standard Operating Procedures (SOP)](docs/SOP.md)**.
+## 🚀 Quick Start (Deployment)
 
-### For Users (Zero-Cloning Deploy)
+You don't need to clone this repo to start using these packs. Just run:
+
 ```bash
-# List available packs
+# 1. Browse Available Intelligence
 curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- list
 
-# Deploy a pack
+# 2. Deploy a Pack (e.g., Code Review)
 curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- deploy php-code-review
 ```
 
-### For Intelligence Engineers (Contributors)
-```bash
-git clone https://github.com/simform-git/awesome-copilot-opensource.git
-make help
-make verify
-```
+---
 
-## 🤝 Contributing
+## 📂 Resources
+- **[Intelligence Architecture](docs/architecture/php-orchestration.md):** How our 4-phase orchestration works.
+- **[Standard Operating Procedures (SOP)](docs/SOP.md):** Detailed guides for users and contributors.
+- **[Core Concepts](docs/architecture/concepts.md):** Understanding Intelligence vs. Stubs.
 
-We follow **Conventional Commits** for all PRs. See [ROADMAP.md](ROADMAP.md) for upcoming tasks.
+## 🤝 Community
+- **[Contributing Guide](CONTRIBUTING.md):** Join us as an Intelligence Engineer.
+- **[Code of Conduct](CODE_OF_CONDUCT.md):** Our community standards.
+- **[Roadmap](ROADMAP.md):** Upcoming PHP packs and Meta-Agent features.
+
+---
+*Built with ❤️ for the PHP Community by Simform.*
