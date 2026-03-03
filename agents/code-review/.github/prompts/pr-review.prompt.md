@@ -22,42 +22,75 @@ Review PR `$PR_NUMBER` using the parallel agent system.
 
 ### Phase 0: Context Extraction
 
-**Run ONE terminal command. Do NOT read source files. Move to Phase 1 immediately.**
+**First, detect the remote platform (GitHub or Bitbucket) from `git remote get-url origin`. Then run ONE terminal command to fetch the diff. Do NOT read source files. Move to Phase 1 immediately after.**
 
-**GitHub (default) — with automatic fallback:**
+**GitHub — with automatic fallback:**
 ```bash
 REVIEW_DIR=.review-tmp/pr-review/$PR_NUMBER && mkdir -p "$REVIEW_DIR" \
-	&& { gh pr view $PR_NUMBER --json title,body,files,additions,deletions > "$REVIEW_DIR/metadata.json" \
-	&& gh pr diff $PR_NUMBER > "$REVIEW_DIR/diff.txt"; } 2>/dev/null \
-	|| { echo "GH_FALLBACK: gh CLI not authenticated, using git fetch" \
-	&& git fetch origin "pull/$PR_NUMBER/head:_pr_review_$PR_NUMBER" 2>/dev/null \
-	&& git diff "origin/$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo main)..._pr_review_$PR_NUMBER" > "$REVIEW_DIR/diff.txt" \
-	&& echo '{"note":"metadata unavailable - used git fallback"}' > "$REVIEW_DIR/metadata.json"; }
+	&& if gh auth status &>/dev/null; then \
+		gh pr view $PR_NUMBER --json title,body,files,additions,deletions > "$REVIEW_DIR/metadata.json" \
+		&& gh pr diff $PR_NUMBER > "$REVIEW_DIR/diff.txt" \
+		&& echo "MODE=gh_full"; \
+	else \
+		echo "WARNING: gh CLI not authenticated. To enable full reviews with PR metadata, run:" \
+		&& echo "  gh auth login" \
+		&& echo "Continuing with git fallback..." \
+		&& git fetch origin "pull/$PR_NUMBER/head:_pr_review_$PR_NUMBER" \
+		&& git diff "origin/$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo main)..._pr_review_$PR_NUMBER" > "$REVIEW_DIR/diff.txt" \
+		&& echo '{}' > "$REVIEW_DIR/metadata.json" \
+		&& echo "MODE=gh_fallback"; \
+	fi
 ```
 
-**If the output contains `GH_FALLBACK`:**
-- The diff was fetched via `git fetch` — the review can proceed normally
-- PR metadata (title, description) is unavailable — **skip the `pr-quality` agent** (run 5 agents instead of 6)
-- Do NOT ask the user to paste the diff or authenticate — just proceed
-- Note in the final report: "PR metadata unavailable (gh CLI not authenticated). Skipped pr-quality agent."
-
-**Bitbucket** (if remote URL contains `bitbucket.org`):
+**Bitbucket — with automatic fallback:**
 ```bash
 REVIEW_DIR=.review-tmp/pr-review/$PR_NUMBER && mkdir -p "$REVIEW_DIR" \
 	&& REMOTE=$(git remote get-url origin) \
 	&& WORKSPACE=$(echo "$REMOTE" | sed 's|.*bitbucket.org[:/]\([^/]*\)/.*|\1|') \
 	&& REPO=$(echo "$REMOTE" | sed 's|.*bitbucket.org[:/][^/]*/\([^/.]*\).*|\1|') \
-	&& curl -s -H "Authorization: Bearer $BITBUCKET_TOKEN" \
-		"https://api.bitbucket.org/2.0/repositories/$WORKSPACE/$REPO/pullrequests/$PR_NUMBER" > "$REVIEW_DIR/metadata.json" \
-	&& curl -s -H "Authorization: Bearer $BITBUCKET_TOKEN" \
-		"https://api.bitbucket.org/2.0/repositories/$WORKSPACE/$REPO/pullrequests/$PR_NUMBER/diff" > "$REVIEW_DIR/diff.txt"
+	&& if [ -n "$BITBUCKET_TOKEN" ]; then \
+		curl -s -H "Authorization: Bearer $BITBUCKET_TOKEN" \
+			"https://api.bitbucket.org/2.0/repositories/$WORKSPACE/$REPO/pullrequests/$PR_NUMBER" > "$REVIEW_DIR/metadata.json" \
+		&& curl -s -H "Authorization: Bearer $BITBUCKET_TOKEN" \
+			"https://api.bitbucket.org/2.0/repositories/$WORKSPACE/$REPO/pullrequests/$PR_NUMBER/diff" > "$REVIEW_DIR/diff.txt" \
+		&& echo "MODE=bb_full"; \
+	else \
+		echo "WARNING: BITBUCKET_TOKEN not set. To enable full reviews with PR metadata:" \
+		&& echo "  1. Create an App Password: https://bitbucket.org/account/settings/app-passwords/" \
+		&& echo "     (grant: Repositories Read, Pull Requests Read)" \
+		&& echo "  2. Export it: export BITBUCKET_TOKEN=your_app_password" \
+		&& echo "Continuing with git fallback..." \
+		&& PR_BRANCH=$(curl -s "https://api.bitbucket.org/2.0/repositories/$WORKSPACE/$REPO/pullrequests/$PR_NUMBER" 2>/dev/null | grep -o '"source":{[^}]*"branch":{[^}]*"name":"[^"]*"' | grep -o '"name":"[^"]*"$' | cut -d'"' -f4) \
+		&& if [ -n "$PR_BRANCH" ]; then \
+			git fetch origin "$PR_BRANCH" \
+			&& git diff "origin/$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo main)...origin/$PR_BRANCH" > "$REVIEW_DIR/diff.txt" \
+			&& echo '{}' > "$REVIEW_DIR/metadata.json" \
+			&& echo "MODE=bb_fallback"; \
+		else \
+			echo "ERROR: Could not fetch PR branch. Public API access may be restricted." \
+			&& echo "Set BITBUCKET_TOKEN to proceed." \
+			&& echo "MODE=bb_failed"; \
+		fi; \
+	fi
 ```
 
-**Abort only if:** both `gh` and `git fetch` fail, empty diff, or PR not found. Search for `project-constitution.md` (repo root, `docs/`, `.github/`).
+### Phase 0 — Handling the result
+
+| Mode | Diff | Metadata | pr-quality agent | Can post to PR |
+|------|------|----------|-----------------|----------------|
+| `gh_full` | Yes | Yes | Yes (6 agents) | Yes |
+| `gh_fallback` | Yes | No | Skip (5 agents) | No — print to console |
+| `bb_full` | Yes | Yes | Yes (6 agents) | Yes |
+| `bb_fallback` | Yes | No | Skip (5 agents) | No — print to console |
+| `bb_failed` | No | No | **Abort review** | No |
+
+- **Always proceed automatically** — do NOT ask the user to paste the diff or authenticate
+- The auth warning is already printed in the terminal output — the user sees it
+- Search for `project-constitution.md` (repo root, `docs/`, `.github/`)
 
 ### Phase 1: Parallel Agent Analysis
 
-**Standard: 6 agents in parallel** (or 5 if metadata unavailable — skip pr-quality). **Quick: 2 agents** (coding-standards + linting).
+**Full mode: 6 agents in parallel.** **Fallback mode: 5 agents** (skip pr-quality). **Quick: 2 agents** (coding-standards + linting).
 
 Pass `$REVIEW_DIR/diff.txt` to each agent — they will load it with `readFile`. Pass `$REVIEW_DIR/metadata.json` only to `pr-quality`. Do NOT save agent responses to files.
 
@@ -69,7 +102,7 @@ Pass all agent JSON responses directly inline to hallucination-detector (along w
 
 Risk score (1-10): critical>0 → 10 | high≥3 → 9 | high=2 → 8 | high=1 → 7 | medium≥5 → 6 | medium≥3 → 5 | medium>0 → 4 | low>0 → 3 | else → 1
 
-**Post to PR** via `gh pr comment $PR_NUMBER --body "<review>"` (or Bitbucket API). `--dry-run` or `GH_FALLBACK` → prints to console only.
+**Post to PR** via `gh pr comment` (GitHub) or Bitbucket API — only in `*_full` modes. In `*_fallback` or `--dry-run` → print to console only.
 
 ```markdown
 ## PR Review - #$PR_NUMBER
@@ -91,3 +124,6 @@ Risk score (1-10): critical>0 → 10 | high≥3 → 9 | high=2 → 8 | high=1 �
 **Agents:** [list] | **Framework:** [detected] | **Constitution:** [found/not found]
 **Tooling:** PHPStan [level] | Psalm [equivalent] (from linting agent, if provided)
 ```
+
+In fallback mode, append to the report:
+> **Note:** PR metadata unavailable — `pr-quality` agent was skipped. To enable full reviews: run `gh auth login` (GitHub) or `export BITBUCKET_TOKEN=<token>` (Bitbucket).
