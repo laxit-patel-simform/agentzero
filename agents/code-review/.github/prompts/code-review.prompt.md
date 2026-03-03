@@ -1,110 +1,89 @@
 ---
 name: code-review
-description: "Reviews local code changes (staged or unstaged) using the same multi-agent system as pr-review, but without requiring a PR or GitHub access."
+description: "Reviews local code changes using the parallel multi-agent system without requiring a PR."
+agent: code-review-orchestrator
 ---
 
 # Code Review - Local Changes
 
-Review local code changes using the parallel agent system. This works on your current git diff without needing a PR or GitHub access.
+Review local code changes using the parallel agent system. Works on your current git diff without needing a PR or remote access.
 
 ## Usage
 
 ```
-/code-review
-/code-review --staged
-/code-review --branch main
-/code-review --files src/Service/OrderService.php src/Controller/OrderController.php
-/code-review --quick
+/code-review                                    # All uncommitted changes
+/code-review --staged                           # Staged changes only
+/code-review --branch                           # Against auto-detected base branch
+/code-review --branch develop                   # Against specific branch
+/code-review --files src/Service/OrderService.php  # Specific files
+/code-review --quick                            # Coding standards + linting only
 ```
-
-- **Default**: Review all uncommitted changes (staged + unstaged)
-- **--staged**: Review only staged changes (`git diff --cached`)
-- **--branch <base>**: Review all changes since branching from `<base>` (`git diff <base>...HEAD`)
-- **--files <paths>**: Review specific files only
-- **--quick**: Coding standards + linting only (faster)
-
-## Prerequisites
-
-- A git repository with changes to review
-- No GitHub access, MCP, or API tokens required
-- Works fully offline in VS Code with Copilot
 
 ## Execution Protocol
 
+**Execute all phases automatically without pausing for user input.**
+
 ### Phase 0: Context Extraction
 
-1. **Get the diff based on mode:**
-   - Default: `git diff` + `git diff --cached` (all uncommitted changes)
-   - `--staged`: `git diff --cached` (staged only)
-   - `--branch main`: `git diff main...HEAD` (branch changes)
-   - `--files`: `git diff -- <file1> <file2>` (specific files)
+**Run ONE terminal command. Do NOT read source files. Move to Phase 1 immediately.**
 
-2. **Extract context:**
-   - Files changed with line counts
-   - Detect framework from `composer.json` (Symfony vs Laravel)
-   - Check for `project-constitution.md` in repo root
-   - Current branch name
+**Default (uncommitted):**
+```bash
+REVIEW_DIR=.review-tmp/code-review/$(git rev-parse --short HEAD 2>/dev/null || echo no-commit) && mkdir -p "$REVIEW_DIR" &&(git diff && git diff --cached) > "$REVIEW_DIR/diff.txt"
+```
 
-3. **Abort conditions:**
-   - No changes found -> abort with message
-   - Not a git repository -> abort
+**If no uncommitted changes, or `--branch`:**
+```bash
+REVIEW_DIR=.review-tmp/code-review/$(git rev-parse --short HEAD 2>/dev/null || echo no-commit) && mkdir -p "$REVIEW_DIR" &&BASE=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo "main") && git diff "$BASE"...HEAD > "$REVIEW_DIR/diff.txt"
+```
+
+**`--staged`:**
+```bash
+REVIEW_DIR=.review-tmp/code-review/$(git rev-parse --short HEAD 2>/dev/null || echo no-commit) && mkdir -p "$REVIEW_DIR" &&git diff --cached > "$REVIEW_DIR/diff.txt"
+```
+
+**`--branch <name>`:**
+```bash
+REVIEW_DIR=.review-tmp/code-review/$(git rev-parse --short HEAD 2>/dev/null || echo no-commit) && mkdir -p "$REVIEW_DIR" &&git diff <name>...HEAD > "$REVIEW_DIR/diff.txt"
+```
+
+**`--files`:**
+```bash
+REVIEW_DIR=.review-tmp/code-review/$(git rev-parse --short HEAD 2>/dev/null || echo no-commit) && mkdir -p "$REVIEW_DIR" &&git diff -- <file1> <file2> > "$REVIEW_DIR/diff.txt" && [ -s "$REVIEW_DIR/diff.txt" ] || echo "NO_DIFF_FILES"
+```
+
+If `--files` returns `NO_DIFF_FILES`, stop: "No changes found in specified files."
+
+Search for `project-constitution.md` (repo root, `docs/`, `.github/`). Abort only if: no diff, not a git repo, or branch doesn't exist.
 
 ### Phase 1: Parallel Agent Analysis
 
-Launch these agents (same as pr-review, minus pr-quality since there's no PR metadata):
+**Standard: 5 agents in parallel** (no pr-quality — there is no PR). **Quick: 2 agents** (coding-standards + linting).
 
-| Agent | Model Tier | Focus |
-|-------|-----------|-------|
-| linting | Light | Type safety, unused code, complexity |
-| coding-standards | Medium | PSR-12, framework conventions |
-| test-coverage | Medium | Test quality and gaps |
-| functional-review | Strong | Business logic vs constitution |
-
-**Note:** The `pr-quality` agent is skipped since there is no PR title/description to evaluate.
-
-**Quick review (2 agents):**
-- coding-standards
-- linting
+Pass `$REVIEW_DIR/diff.txt` file path to each agent — they will load it with `readFile`. Do NOT save agent responses to files.
 
 ### Phase 2: Hallucination Detection
 
-Same as pr-review - verify all findings against the actual diff.
+Pass all agent JSON responses directly inline to hallucination-detector (along with the diff file path). Do NOT run terminal commands to save intermediate files. Abort if hallucinations found.
 
 ### Phase 3-4: Risk Scoring & Output
 
-Same risk scoring formula as pr-review. Output is printed to console (no GitHub posting).
-
-**Output format:**
+Risk score (1-10): critical>0 → 10 | high≥3 → 9 | high=2 → 8 | high=1 → 7 | medium≥5 → 6 | medium≥3 → 5 | medium>0 → 4 | low>0 → 3 | else → 1
 
 ```markdown
 ## Code Review - Local Changes
 
 **Risk Score: X/10**
 **Review Confidence: XX%**
-**Diff source:** [uncommitted / staged / branch:main / files:...]
+**Diff source:** [uncommitted / staged / branch:<name> / files:...]
 
-### Critical Issues (N)
-- [ ] [Issue title] ([file:line])
-
-### High Issues (N)
-- [ ] [Issue title] ([file:line])
-
-### Medium Issues (N)
+### Critical / High / Medium Issues (N)
 - [ ] [Issue title] ([file:line])
 
 ### Suggestions (N)
 - [Issue title] ([file:line])
 
 ---
-
-**Agents:** coding-standards | linting | functional-review | test-coverage
-**Framework:** [Symfony/Laravel/Generic PHP]
-**Constitution:** [Found/Not found]
+**Agents:** [list] | **Framework:** [detected] | **Constitution:** [found/not found]
+**Tooling:** PHPStan [level] | Psalm [equivalent] (from linting agent, if provided)
 ```
-
-## Tips
-
-- Run `/code-review --staged` before committing to catch issues early
-- Run `/code-review --branch main` before opening a PR
-- Use `/code-review --quick` for fast style-only feedback
-- For full PR review with metadata checks, use `/pr-review` instead
