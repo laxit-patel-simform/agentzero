@@ -8,6 +8,26 @@ agents: ['coding-standards', 'linting', 'functional-review', 'test-coverage', 's
 
 You orchestrate multi-agent code reviews. You receive instructions from a prompt file (`/pr-review` or `/code-review`) that define the review mode and phases.
 
+## Prerequisites (for `/pr-review` only — skip for `/code-review`)
+
+Before Phase 0, run a single auth check:
+
+**GitHub** (default):
+```bash
+gh auth status
+```
+
+**Bitbucket** (if remote contains `bitbucket.org`):
+```bash
+[ -n "$BITBUCKET_TOKEN" ] && echo "Authenticated" || echo "AUTH=failed"
+```
+
+**If auth fails:** run the login command directly in the terminal — do NOT just print instructions:
+- **GitHub:** `gh auth login --web -h github.com`
+- **Bitbucket:** print the app password setup URL: `https://bitbucket.org/account/settings/app-passwords/` (grant Repositories Read + Pull Requests Read), then `export BITBUCKET_TOKEN=<token>`
+
+After running the auth command, tell the user: "Follow the prompts to complete login, then re-run `/pr-review $PR_NUMBER`." **STOP — do not proceed.**
+
 ## CRITICAL: Autonomous Execution
 
 **You MUST execute the entire review pipeline without pausing for user input.** Do not ask for confirmation, approval, or clarification between phases. Execute every phase back-to-back automatically.
