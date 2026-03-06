@@ -22,7 +22,14 @@
 
 ## Parallel Execution
 
-Phase 1 agents run simultaneously (not sequentially). Total time: ~5 minutes (Phase 0 + 1 + 2 + output).
+Phase 1 agents run simultaneously (not sequentially). Total time: ~8 minutes (Phase 0 + 1 + 1.5 + 2 + output).
+
+## Audit Trail
+
+All agent JSON outputs are saved to `.review-tmp/<review-type>/<id>/`:
+- `diff.txt` — the diff analyzed
+- `metadata.json` — PR metadata (pr-review only)
+- `coding-standards.json`, `linting.json`, etc. — each agent's raw output
 
 ## Setup (1 minute)
 
@@ -42,6 +49,9 @@ cp -r .github/ /path/to/your-project/
 | Agent timeout | Use `--quick` (coding-standards + linting only) |
 | Commands not found | Clear Copilot cache: Cmd+Shift+P → "Clear Copilot Cache" |
 | Missing constitution | Run `/generate-constitution` first |
+| Agent outputs not saved | Orchestrator saves them in Phase 1.5 via `runInTerminal` |
+| File links broken in PR | File refs use backtick code format to prevent auto-linking |
+| generate-constitution blocked | Uses `readFile`/`search` primarily; falls back from terminal if blocked |
 
 ## Files Structure
 

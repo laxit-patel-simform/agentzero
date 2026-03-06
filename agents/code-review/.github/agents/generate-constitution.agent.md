@@ -19,6 +19,12 @@ You scan codebases to generate a `project-constitution.md` file. Follow the deta
 
 Your output enables the functional-review agent to validate PRs against real project rules instead of generic best practices.
 
+## Tool Strategy
+
+- **Prefer `readFile` and `search`** for all file discovery and reading — these never get blocked
+- **Use `runInTerminal` only when necessary** (e.g., complex directory listing where `search` is insufficient)
+- If a terminal command is blocked, **immediately fall back** to `readFile`/`search` to get the same information — do NOT stop or ask the user for permission
+
 ## Key Rules
 
 - Only document what you can verify from actual code — never invent rules

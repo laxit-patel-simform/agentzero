@@ -38,10 +38,18 @@ Parallel multi-phase review:
   - test-coverage — Test quality
   - security — Injection, authz, secrets
   - pr-quality — PR metadata
-- **Phase 2** (2 min): Verify all findings
+- **Phase 1.5** (10s): Save all agent JSON outputs to `.review-tmp/`
+- **Phase 2** (2 min): Verify all findings against diff
 - **Phase 3-4** (1 min): Aggregate results & report
 
 **Total: ~8 minutes** (vs ~25 min sequential)
+
+### Key Behaviors
+
+- **Diff-only scope**: Agents only report issues on `+` lines (changed/added code), never pre-existing code
+- **Severity ceiling**: Formatting issues (whitespace, spacing) capped at `low` severity
+- **Separate sections**: Report splits Issues, Suggestions, and Pre-existing Notes — only Issues affect risk score
+- **Audit trail**: All agent JSON outputs saved to `.review-tmp/` for debugging and inspection
 
 ---
 
@@ -116,6 +124,7 @@ The `functional-review` agent uses this to validate business logic. It works wit
 |-----------|---------|--------------|
 | Symfony | 6.x+ | PHP 8.1+ |
 | Laravel | 10+ | PHP 8.1+ |
+| CakePHP | 3.x+ | PHP 7.2+ |
 | Generic PHP | Full | PSR-12 only |
 
 Auto-detected from `composer.json`. See [.github/instructions/](.github/instructions/) for framework-specific patterns.
@@ -147,19 +156,14 @@ No MCP server required. Works fully offline.
 
 ## Output
 
-Each agent produces structured JSON with findings, confidence scores, and evidence. Results are aggregated into a risk-scored review (1-10 scale).
+Each agent produces structured JSON with findings, confidence scores, and evidence. All agent outputs are saved to `.review-tmp/` for inspection. Results are aggregated into a risk-scored review (1-10 scale).
 
-Example finding:
-```json
-{
-  "severity": "high",
-  "title": "Missing return type declaration",
-  "file": "src/Service/OrderService.php",
-  "line": 12,
-  "code": "public function process($order)",
-  "recommendation": "Add return type: OrderResult"
-}
-```
+The report separates findings into distinct sections:
+- **Critical / High / Medium / Low Issues** — actionable problems in changed code (affect risk score)
+- **Suggestions** — alternative approaches, improvements (do not affect risk score)
+- **Pre-existing Notes** — observations about unchanged code near the diff (do not affect risk score)
+
+File references use backtick-wrapped full paths (e.g., `` `src/Controller/OrderController.php:L42` ``) to prevent broken auto-links in GitHub PR comments.
 
 ---
 

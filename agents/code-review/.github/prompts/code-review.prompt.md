@@ -60,15 +60,23 @@ Search for `project-constitution.md` (repo root, `docs/`, `.github/`). Abort onl
 
 **Standard: 5 agents in parallel** (no pr-quality — there is no PR). **Quick: 2 agents** (coding-standards + linting).
 
-Pass `$REVIEW_DIR/diff.txt` file path to each agent — they will load it with `readFile`. Do NOT save agent responses to files.
+Pass `$REVIEW_DIR/diff.txt` path to each agent. Agents return their JSON responses to the orchestrator.
+
+### Phase 1.5: Save Agent Outputs
+
+After all agents return, the orchestrator saves each agent's JSON response to `$REVIEW_DIR/<agent-name>.json` using a single `runInTerminal` command. This creates the audit trail for debugging and the hallucination detector to read from.
 
 ### Phase 2: Hallucination Detection
 
-Pass all agent JSON responses directly inline to hallucination-detector (along with the diff file path). Do NOT run terminal commands to save intermediate files. Abort if hallucinations found.
+Pass `$REVIEW_DIR` path to hallucination-detector. It reads all agent JSON files from `$REVIEW_DIR/` and cross-references against the diff. It verifies that all claims reference `+` lines only. Abort if hallucinations found.
 
 ### Phase 3-4: Risk Scoring & Output
 
+**Scoring excludes:** pre-existing issues, style/formatting issues, and suggestions.
+
 Risk score (1-10): critical>0 → 10 | high≥3 → 9 | high=2 → 8 | high=1 → 7 | medium≥5 → 6 | medium≥3 → 5 | medium>0 → 4 | low>0 → 3 | else → 1
+
+**File reference format:** Use full repo-relative paths wrapped in backticks to prevent broken auto-links. Example: `` `html/src/Controller/DashboardController.php:L123` ``
 
 ```markdown
 ## Code Review - Local Changes
@@ -77,11 +85,21 @@ Risk score (1-10): critical>0 → 10 | high≥3 → 9 | high=2 → 8 | high=1 �
 **Review Confidence: XX%**
 **Diff source:** [uncommitted / staged / branch:<name> / files:...]
 
-### Critical / High / Medium Issues (N)
-- [ ] [Issue title] ([file:line])
+### Critical / High Issues (N)
+- [ ] [Issue title] (`full/path/to/file.php:L123`)
+
+### Medium Issues (N)
+- [ ] [Issue title] (`full/path/to/file.php:L123`)
+
+### Low Issues (N)
+- [Issue title] (`full/path/to/file.php:L123`)
 
 ### Suggestions (N)
-- [Issue title] ([file:line])
+- [Suggestion title] (`full/path/to/file.php:L123`) — [rationale]
+
+### Pre-existing Notes (N)
+> These are observations about unchanged code near the diff. They do not affect the risk score.
+- [Note title] (`full/path/to/file.php:L123`)
 
 ---
 **Agents:** [list] | **Framework:** [detected] | **Constitution:** [found/not found]

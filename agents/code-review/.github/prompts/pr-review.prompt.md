@@ -51,17 +51,25 @@ Search for `project-constitution.md` (repo root, `docs/`, `.github/`). Abort onl
 
 **Standard: 6 agents in parallel.** **Quick: 2 agents** (coding-standards + linting).
 
-Pass `$REVIEW_DIR/diff.txt` to each agent — they will load it with `readFile`. Pass `$REVIEW_DIR/metadata.json` only to `pr-quality`. Do NOT save agent responses to files.
+Pass `$REVIEW_DIR/diff.txt` path to each agent. Agents return their JSON responses to the orchestrator. Pass `$REVIEW_DIR/metadata.json` path only to `pr-quality`.
+
+### Phase 1.5: Save Agent Outputs
+
+After all agents return, the orchestrator saves each agent's JSON response to `$REVIEW_DIR/<agent-name>.json` using a single `runInTerminal` command. This creates the audit trail for debugging and the hallucination detector to read from.
 
 ### Phase 2: Hallucination Detection
 
-Pass all agent JSON responses directly inline to hallucination-detector (along with the diff file path). Do NOT run terminal commands to save intermediate files. Abort if hallucinations found.
+Pass `$REVIEW_DIR` path to hallucination-detector. It reads all agent JSON files from `$REVIEW_DIR/` and cross-references against the diff. It verifies that all claims reference `+` lines only. Abort if hallucinations found.
 
 ### Phase 3-4: Risk Scoring & Output
+
+**Scoring excludes:** pre-existing issues, style/formatting issues, and suggestions.
 
 Risk score (1-10): critical>0 → 10 | high≥3 → 9 | high=2 → 8 | high=1 → 7 | medium≥5 → 6 | medium≥3 → 5 | medium>0 → 4 | low>0 → 3 | else → 1
 
 **Post to PR** via `gh pr comment $PR_NUMBER --body "<review>"` (GitHub) or Bitbucket API. `--dry-run` → print to console only.
+
+**File reference format:** Use full repo-relative paths wrapped in backticks to prevent broken GitHub auto-links. Example: `` `html/src/Controller/DashboardController.php:L123` ``
 
 ```markdown
 ## PR Review - #$PR_NUMBER
@@ -70,14 +78,21 @@ Risk score (1-10): critical>0 → 10 | high≥3 → 9 | high=2 → 8 | high=1 �
 **Review Confidence: XX%**
 **Context:** [Full / Partial / Minimal]
 
-### Critical Issues (N)
-- [ ] [Issue title] ([file:line])
+### Critical / High Issues (N)
+- [ ] [Issue title] (`full/path/to/file.php:L123`)
 
-### High / Medium Issues (N)
-- [ ] [Issue title] ([file:line])
+### Medium Issues (N)
+- [ ] [Issue title] (`full/path/to/file.php:L123`)
+
+### Low Issues (N)
+- [Issue title] (`full/path/to/file.php:L123`)
 
 ### Suggestions (N)
-- [Issue title] ([file:line])
+- [Suggestion title] (`full/path/to/file.php:L123`) — [rationale]
+
+### Pre-existing Notes (N)
+> These are observations about unchanged code near the diff. They do not affect the risk score.
+- [Note title] (`full/path/to/file.php:L123`)
 
 ---
 **Agents:** [list] | **Framework:** [detected] | **Constitution:** [found/not found]

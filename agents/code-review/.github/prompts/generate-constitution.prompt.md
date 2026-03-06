@@ -12,62 +12,73 @@ Scan this codebase and generate a `project-constitution.md` file that the code r
 
 The functional review agent uses the constitution to validate PRs against your team's actual rules and patterns. Without it, reviews are limited to generic best practices. A good constitution catches business logic violations, forbidden patterns, and architecture drift.
 
+## Tool Strategy
+
+- **Prefer `readFile` and `search`** for all file discovery and content reading — these are always available and never blocked
+- **Use `runInTerminal` only when needed** (e.g., counting files, complex directory traversal)
+- **If any terminal command is blocked, immediately fall back to `readFile`/`search`** — do NOT stop, do NOT ask the user for permission, just use the alternative tool to get the same information
+
 ## Execution Protocol
 
 ### Step 1: Project Discovery
 
-Run these checks to understand the project:
+**Read project config (use `readFile`):**
+- `composer.json` — dependencies, PHP version, project name
+- `package.json` — frontend dependencies (if present)
+- `.env.example` — environment variables (if present)
+- `README.md` — project description (if present)
 
-```bash
-# Framework and dependencies
-cat composer.json
+**Discover directory structure (use `search`, fall back from terminal if blocked):**
+- Search for `*Controller.php` files to find controller directories
+- Search for `*Service.php` files to find service layer
+- Search for `*Entity.php` or files in `Models/` directories
+- Search for `*Repository.php` files
+- Search for `*Event.php`, `*Listener.php`, `*Subscriber.php`
+- Search for migration files in `database/migrations/` or `migrations/`
+- Search for test files in `tests/` or `test/`
 
-# Directory structure
-find . -maxdepth 3 -type d -not -path '*/vendor/*' -not -path '*/node_modules/*' -not -path '*/.git/*' | head -50
-
-# Config files present
-ls -la phpunit.xml* pest.php codeception.yml* .env.example docker-compose* 2>/dev/null
-```
+**Find config files (use `search`):**
+- `phpunit.xml`, `phpunit.xml.dist`, `pest.php`, `codeception.yml`
+- `.php-cs-fixer.php`, `phpstan.neon`, `phpcs.xml`
+- `docker-compose.yml`, `docker-compose.yaml`
 
 ### Step 2: Framework Detection
 
-From `composer.json`, identify:
-- **Symfony**: Look for `symfony/framework-bundle`, check `config/`, `src/Entity/`, `src/Controller/`
-- **Laravel**: Look for `laravel/framework`, check `app/Models/`, `app/Http/Controllers/`, `routes/`
+From `composer.json` (already read in Step 1), identify:
+- **Symfony**: `symfony/framework-bundle` in require → check `config/`, `src/Entity/`, `src/Controller/`
+- **Laravel**: `laravel/framework` in require → check `app/Models/`, `app/Http/Controllers/`, `routes/`
+- **CakePHP**: `cakephp/cakephp` in require → check `src/Controller/`, `src/Model/`, `config/routes.php`
 - **PHP version**: From `require.php` constraint
-- **Testing**: PHPUnit, Pest, Codeception
+- **Testing**: PHPUnit, Pest, Codeception in require-dev
 
 ### Step 3: Codebase Analysis
 
 Scan actual code to extract real patterns (not guesses):
 
 **Entities / Models** — find the domain objects:
-- Symfony: Search `src/Entity/*.php` for class names and properties
-- Laravel: Search `app/Models/*.php` for class names, fillable, casts, relationships
+- Use `search` to find files, then `readFile` on representative files
+- Note class names, properties, relationships, validation rules
 
 **Services** — find business logic layer:
-- Search for `*Service.php` files, note their purpose from class names and methods
+- Use `search` for `*Service.php`, then `readFile` on key services
+- Note patterns: constructor injection, method signatures, return types
 
 **Controllers** — understand API/routes:
-- List all controller classes, extract public method names
-- For Symfony: look for `#[Route]` attributes
-- For Laravel: check `routes/api.php` and `routes/web.php`
+- Use `search` for `*Controller.php`, then `readFile` on representative ones
+- Note routing patterns, middleware, response formats
 
 **Repositories** — database access patterns:
-- Symfony: Search for `*Repository.php`
-- Laravel: Check if repository pattern is used or direct Eloquent
+- Determine if repository pattern, direct ORM, or raw queries are used
 
-**Events / Listeners / Subscribers** — side effect patterns:
-- Search for `*Event.php`, `*Listener.php`, `*Subscriber.php`
+**Events / Listeners** — side effect patterns:
+- Search and read to understand event-driven architecture (if any)
 
 **Migrations** — schema history:
-- Count migration files
-- Look at recent migrations for patterns
+- Use `search` to find migration files, `readFile` on recent ones
 
 **Tests** — testing patterns:
-- What test directories exist
-- What test base classes are used
-- Data providers, factories, fixtures
+- Use `search` to find test files, `readFile` on representative ones
+- Note base classes, data providers, factories, fixtures
 
 ### Step 4: Pattern Extraction
 
