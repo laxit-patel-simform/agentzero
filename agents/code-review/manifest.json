@@ -1,0 +1,38 @@
+{
+  "id": "code-review",
+  "name": "PHP Code Reviewer",
+  "version": "1.0.0",
+  "description": "Comprehensive PHP code review orchestration for Laravel and Symfony projects.",
+  "category": "Quality",
+  "ecosystem": "PHP",
+  "frameworks": ["Laravel", "Symfony"],
+  "compatibility": {
+    "php": ">=8.1",
+    "copilot": "latest"
+  },
+  "files": {
+    "agents": [
+      ".github/agents/code-review-orchestrator.agent.md",
+      ".github/agents/coding-standards.agent.md",
+      ".github/agents/functional-review.agent.md",
+      ".github/agents/generate-constitution.agent.md",
+      ".github/agents/hallucination-detector.agent.md",
+      ".github/agents/linting.agent.md",
+      ".github/agents/pr-quality.agent.md",
+      ".github/agents/security.agent.md",
+      ".github/agents/test-coverage.agent.md"
+    ],
+    "prompts": [
+      ".github/prompts/code-review.prompt.md",
+      ".github/prompts/generate-constitution.prompt.md",
+      ".github/prompts/pr-review.prompt.md"
+    ],
+    "instructions": [
+      ".github/instructions/php-laravel.instructions.md",
+      ".github/instructions/php-symfony.instructions.md"
+    ]
+  },
+  "dependencies": {
+    "cli": ["gh", "php"]
+  }
+}

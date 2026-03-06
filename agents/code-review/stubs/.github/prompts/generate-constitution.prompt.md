@@ -1,6 +1,6 @@
 ---
 name: generate-constitution
-description: "Scans the codebase to auto-generate a project-constitution.md tailored to your project's actual patterns, framework, and conventions."
+description: "Scans the codebase to auto-generate a project-constitution.md tailored to your project patterns framework and conventions."
 agent: generate-constitution
 ---
 

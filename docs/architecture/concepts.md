@@ -16,6 +16,12 @@ Our "Compiled" deliverables are the **Stubs**—standardized files that modern I
 - **`.github/prompts/`**: Defines reusable slash commands.
 - **`.github/instructions/`**: Defines contextual rules.
 
+### Why "Stubs" are Mandatory
+To maintain a professional deployment workflow, we enforce a strict `stubs/` directory for all agents:
+1. **Clean Deployment:** The `bin/agentzero.sh` installer copies the *entire* `stubs/` directory into the target project. This ensures only the "payload" is shipped, leaving behind internal documentation, tests, and metadata (like `manifest.json`).
+2. **Payload Mirroring:** The directory structure inside `stubs/` (e.g., `stubs/.github/`) mirrors exactly where the files will land in the user's repository, making the installation logic simple and predictable.
+3. **Source vs. Dist:** We treat the agent's root as "Source" (logic, README, meta) and the `stubs/` folder as "Distribution" (the actual markdown files the AI reads).
+
 We use **Markdown + YAML frontmatter** as our standardized format for these **Stubs** because it is the most widely supported protocol across AI agents.
 
 ## 3. The "AgentZero" (Discovery & Automation)

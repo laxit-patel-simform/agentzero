@@ -5,6 +5,12 @@
       "name": "Example PHP Agent",
       "description": "A boilerplate agent for PHP developers.",
       "version": "1.0.0"
+    },
+    {
+      "id": "code-review",
+      "name": "PHP Code Reviewer",
+      "description": "Comprehensive PHP code review orchestration for Laravel and Symfony projects.",
+      "version": "1.0.0"
     }
   ]
 }
