@@ -2,15 +2,13 @@
   "agents": [
     {
       "id": "example-php-agent",
-      "name": "Example PHP Agent",
-      "description": "A boilerplate agent for PHP developers.",
-      "version": "1.0.0"
+      "author": "laxit.p@simformsolutions.com",
+      "description": "A boilerplate agent for PHP developers."
     },
     {
       "id": "code-review",
-      "name": "PHP Code Reviewer",
-      "description": "Comprehensive PHP code review orchestration for Laravel and Symfony projects.",
-      "version": "1.0.0"
+      "author": "rajsee.g@simformsolutions.com",
+      "description": "Comprehensive PHP code review orchestration for Laravel and Symfony projects."
     }
   ]
 }

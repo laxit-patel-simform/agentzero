@@ -16,5 +16,5 @@ function parse_manifest_dependencies() {
 
 function parse_registry() {
     local json=$1
-    echo "$json" | php -r "\$r = json_decode(file_get_contents('php://stdin'), true); if (isset(\$r['agents'])) { foreach (\$r['agents'] as \$a) { printf(\"${SET_COLOR_BOLD}%-25s${SET_COLOR_RESET} %-10s %-40s\n\", \$a['id'], \$a['version'], \$a['description']); } }"
+    echo "$json" | php -r "\$r = json_decode(file_get_contents('php://stdin'), true); if (isset(\$r['agents'])) { foreach (\$r['agents'] as \$a) { printf(\"${SET_COLOR_BOLD}%-25s${SET_COLOR_RESET} %-35s %-40s\n\", \$a['id'], \$a['author'], \$a['description']); } }"
 }

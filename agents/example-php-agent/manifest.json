@@ -1,7 +1,7 @@
 {
   "id": "example-php-agent",
   "name": "Example PHP Agent",
-  "version": "1.0.0",
+  "author": "laxit.p@simformsolutions.com",
   "description": "A boilerplate agent for PHP developers. Demonstrates the Intelligence + Stubs architecture.",
   "category": "Education",
   "ecosystem": "PHP",

@@ -94,20 +94,20 @@ function show_help() {
 function list_agents() {
     if [ "$MODE" == "DEV" ]; then
         log_info "Developer Mode: Scanning local $AGENTS_DIR..."
-        printf "%-25s %-10s %-40s\n" "ID" "VERSION" "DESCRIPTION"
-        echo "--------------------------------------------------------------------------------"
+        printf "%-25s %-35s %-40s\n" "ID" "AUTHOR" "DESCRIPTION"
+        echo "----------------------------------------------------------------------------------------------------"
         for d in $AGENTS_DIR/*; do
             if [ -d "$d" ] && [ -f "$d/manifest.json" ]; then
                 local id=$(basename "$d")
-                php -r "\$m = json_decode(file_get_contents('$d/manifest.json'), true); printf(\"${SET_COLOR_BOLD}%-25s${SET_COLOR_RESET} %-10s %-40s\n\", '$id', \$m['version'] ?? '', \$m['description'] ?? '');"
+                php -r "\$m = json_decode(file_get_contents('$d/manifest.json'), true); printf(\"${SET_COLOR_BOLD}%-25s${SET_COLOR_RESET} %-35s %-40s\n\", '$id', \$m['author'] ?? '', \$m['description'] ?? '');"
             fi
         done
     else
         log_info "Remote Mode: Fetching registry from $REPO_USER/$REPO_NAME ($REPO_BRANCH)..."
         local registry_json=$(fetch_remote_file "registry.json")
         if [ -z "$registry_json" ]; then log_error "Could not fetch registry."; exit 1; fi
-        printf "%-25s %-10s %-40s\n" "ID" "VERSION" "DESCRIPTION"
-        echo "--------------------------------------------------------------------------------"
+        printf "%-25s %-35s %-40s\n" "ID" "AUTHOR" "DESCRIPTION"
+        echo "----------------------------------------------------------------------------------------------------"
         parse_registry "$registry_json"
     fi
     echo ""
