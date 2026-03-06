@@ -26,6 +26,17 @@ else
     MODE="REMOTE"
 fi
 
+function fetch_remote_file() {
+    local file_path=$1
+    # Try using gh api first (better for private repos)
+    if command -v gh >/dev/null 2>&1; then
+        gh api -H "Accept: application/vnd.github.v3.raw" "/repos/$REPO_USER/$REPO_NAME/contents/$file_path?ref=$REPO_BRANCH" 2>/dev/null
+        if [ $? -eq 0 ]; then return 0; fi
+    fi
+    # Fallback to curl (for public repos or if gh is missing)
+    curl -sSL "$REPO_RAW_URL/$file_path"
+}
+
 function show_logo() {
     echo -e "${SET_COLOR_PURPLE}${SET_COLOR_BOLD}"
     echo "  █████╗  ██████╗ ███████╗███╗   ██╗████████╗███████╗███████╗██████╗  ██████╗ "
@@ -72,9 +83,9 @@ function list_agents() {
             fi
         done
     else
-        log_info "Remote Mode: Fetching registry from $REPO_RAW_URL..."
-        local registry_json=$(curl -sSL "$REPO_RAW_URL/registry.json")
-        if [ $? -ne 0 ] || [ -z "$registry_json" ]; then
+        log_info "Remote Mode: Fetching registry from $REPO_USER/$REPO_NAME ($REPO_BRANCH)..."
+        local registry_json=$(fetch_remote_file "registry.json")
+        if [ -z "$registry_json" ]; then
             log_error "Could not fetch registry from GitHub."
             exit 1
         fi
@@ -100,9 +111,9 @@ function deploy_agent() {
         mkdir -p .github
         cp -rv "$agent_path/stubs/.github/." .github/
     else
-        log_info "Remote Mode: Deploying $agent_id from $REPO_RAW_URL..."
-        local manifest_json=$(curl -sSL "$REPO_RAW_URL/agents/$agent_id/manifest.json")
-        if [ $? -ne 0 ] || [ -z "$manifest_json" ]; then
+        log_info "Remote Mode: Deploying $agent_id from $REPO_USER/$REPO_NAME ($REPO_BRANCH)..."
+        local manifest_json=$(fetch_remote_file "agents/$agent_id/manifest.json")
+        if [ -z "$manifest_json" ]; then
             log_error "Could not find manifest for agent '$agent_id' on GitHub."
             exit 1
         fi
@@ -114,12 +125,13 @@ function deploy_agent() {
             log_info "  Downloading $f..."
             local target_dir=$(dirname ".github/$f")
             mkdir -p "$target_dir"
-            curl -sSL "$REPO_RAW_URL/agents/$agent_id/stubs/$f" -o ".github/$f"
+            fetch_remote_file "agents/$agent_id/stubs/$f" > ".github/$f"
             
-            if [ $? -eq 0 ]; then
+            if [ -s ".github/$f" ]; then
                 log_success "    Successfully downloaded $f"
             else
                 log_error "    Failed to download $f"
+                rm ".github/$f" # Cleanup empty file on failure
             fi
         done
     fi
