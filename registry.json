@@ -9,6 +9,11 @@
       "id": "code-review",
       "author": "rajsee.g@simformsolutions.com",
       "description": "Comprehensive PHP code review orchestration for Laravel and Symfony projects."
+    },
+    {
+      "id": "security-audit",
+      "author": "rajsee.g@simformsolutions.com",
+      "description": "Autonomous PHP security auditor — scans for vulnerabilities, misconfigurations, secrets, and best-practice violations."
     }
   ]
 }
