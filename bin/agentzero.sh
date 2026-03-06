@@ -50,6 +50,10 @@ if [ "$MODE" == "DEV" ]; then
 else
     # Bootstrap remote module via curl
     curl -sSL "$REPO_RAW_URL/bin/core/remote.sh" > "$CORE_DIR/remote.sh"
+    if grep -q "404: Not Found" "$CORE_DIR/remote.sh" || [ ! -s "$CORE_DIR/remote.sh" ]; then
+        log_error "Failed to bootstrap remote module (404). Please wait a moment for GitHub cache to update."
+        exit 1
+    fi
     source "$CORE_DIR/remote.sh"
 fi
 
@@ -58,6 +62,10 @@ MODULES=("manifest.sh" "resolver.sh" "installer.sh")
 for mod in "${MODULES[@]}"; do
     if [ "$MODE" == "REMOTE" ]; then
         fetch_remote_file "bin/core/$mod" > "$CORE_DIR/$mod"
+        if grep -q "404: Not Found" "$CORE_DIR/$mod" || [ ! -s "$CORE_DIR/$mod" ]; then
+            log_error "Failed to fetch module $mod (404)."
+            exit 1
+        fi
     fi
     source "$CORE_DIR/$mod"
 done
