@@ -223,7 +223,7 @@ graph LR
 Download, review, and execute the AgentZero bootstrapper:
 ```bash
 # 1. Download the script
-curl -sSLo agentzero.sh https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh
+curl -sSLo agentzero.sh https://raw.githubusercontent.com/laxit-patel-simform/agentzero/main/bin/agentzero.sh
 chmod +x agentzero.sh
 
 # 2. Browse available intelligence
@@ -239,10 +239,10 @@ chmod +x agentzero.sh
 ### ⚡ One-Liner (Convenient)
 ```bash
 # List all agents
-curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- list
+curl -sSL https://raw.githubusercontent.com/laxit-patel-simform/agentzero/main/bin/agentzero.sh | bash -s -- list
 
 # Add an agent
-curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- add code-review
+curl -sSL https://raw.githubusercontent.com/laxit-patel-simform/agentzero/main/bin/agentzero.sh | bash -s -- add code-review
 ```
 
 ## 🛠️ Internal Maintenance (For Contributors)

@@ -57,7 +57,7 @@ graph TD
 ### Step 1: Discover (Remote Call)
 The user doesn't clone this repo. They interact with it remotely:
 ```bash
-curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- list
+curl -sSL https://raw.githubusercontent.com/laxit-patel-simform/agentzero/main/bin/agentzero.sh | bash -s -- list
 ```
 
 **Tip: Deploying from your own fork or branch**
@@ -72,19 +72,19 @@ curl -sSL https://raw.githubusercontent.com/$AGENTZERO_USER/awesome-copilot-open
 ### Step 2: Health Check
 Run the "doctor" command to ensure the local environment is ready:
 ```bash
-curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- doctor
+curl -sSL https://raw.githubusercontent.com/laxit-patel-simform/agentzero/main/bin/agentzero.sh | bash -s -- doctor
 ```
 
 ### Step 3: Add
 Choose an agent ID from the list and add it into your project's `.github/` folder:
 ```bash
-curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- add <agent-id>
+curl -sSL https://raw.githubusercontent.com/laxit-patel-simform/agentzero/main/bin/agentzero.sh | bash -s -- add <agent-id>
 ```
 
 ### Step 4: Remove
 If you want to clean up an agent's files:
 ```bash
-curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- remove <agent-id>
+curl -sSL https://raw.githubusercontent.com/laxit-patel-simform/agentzero/main/bin/agentzero.sh | bash -s -- remove <agent-id>
 ```
 
 ### Step 5: Activate
