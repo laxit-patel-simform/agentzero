@@ -86,6 +86,7 @@ function show_help() {
     echo "Commands:"
     echo "  list        List all available Agents"
     echo "  deploy      Deploy an Agent and its dependencies"
+    echo "  uninstall   Remove an Agent's files from the project"
     echo "  doctor      Check local environment for dependencies"
     echo "  help        Show this help message"
 }
@@ -130,6 +131,10 @@ case "$1" in
         if [ -z "$2" ]; then log_error "Specify an agent ID."; exit 1; fi
         resolve_dependencies "$2"
         execute_install_plan
+        ;;
+    uninstall)
+        if [ -z "$2" ]; then log_error "Specify an agent ID to uninstall."; exit 1; fi
+        remove_single_agent "$2"
         ;;
     doctor) run_doctor ;;
     help|*) show_help ;;

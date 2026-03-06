@@ -46,3 +46,36 @@ function deploy_single_agent() {
         done
     fi
 }
+
+function remove_single_agent() {
+    local agent_id=$1
+    log_info "Uninstalling Agent: $agent_id..."
+    
+    local manifest_json
+    if [ "$MODE" == "DEV" ]; then
+        local agent_path="$AGENTS_DIR/$agent_id"
+        if [ ! -d "$agent_path" ]; then log_error "Agent '$agent_id' not found in local agents/."; exit 1; fi
+        manifest_json=$(cat "$agent_path/manifest.json")
+    else
+        manifest_json=$(fetch_remote_file "agents/$agent_id/manifest.json")
+    fi
+
+    if [ -z "$manifest_json" ]; then
+        log_error "Could not fetch manifest for '$agent_id' to perform cleanup."
+        exit 1
+    fi
+
+    # Extract files from manifest and remove each
+    local files=$(parse_manifest_files "$manifest_json")
+    for f in $files; do
+        local target=".github/$f"
+        if [ -f "$target" ]; then
+            rm -v "$target"
+            log_success "  Removed $f"
+        fi
+    done
+
+    # Clean up empty directories in .github
+    find .github -type d -empty -delete 2>/dev/null
+    log_success "Agent '$agent_id' uninstalled."
+}
