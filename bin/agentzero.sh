@@ -11,10 +11,10 @@ SET_COLOR_SUCCESS=$(tput setaf 2)
 SET_COLOR_ERROR=$(tput setaf 1)
 SET_COLOR_BOLD=$(tput bold)
 
-# Configuration (Overridable via ENV)
-REPO_USER="${AGENTZERO_USER:-laxit-patel-simform}"
-REPO_NAME="${AGENTZERO_REPO:-agentzero}"
-REPO_BRANCH="${AGENTZERO_BRANCH:-main}"
+# Configuration (Hardcoded for stability, can still be overridden for local testing)
+REPO_USER="laxit-patel-simform"
+REPO_NAME="agentzero"
+REPO_BRANCH="main"
 REPO_RAW_URL="https://raw.githubusercontent.com/$REPO_USER/$REPO_NAME/$REPO_BRANCH"
 
 AGENTS_DIR="./agents"
