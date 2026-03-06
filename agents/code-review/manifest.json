@@ -33,7 +33,6 @@
     ]
   },
   "dependencies": {
-    "cli": ["gh", "php"],
-    "agents": ["example-php-agent"]
+    "cli": ["gh", "php"]
   }
 }

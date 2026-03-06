@@ -12,10 +12,14 @@
   },
   "files": {
     "agents": [".github/agents/example.agent.md"],
-    "prompts": [".github/prompts/example.prompt.md"],
+    "prompts": [
+      ".github/prompts/example.prompt.md",
+      ".github/prompts/cross-review.prompt.md"
+    ],
     "instructions": [".github/instructions/example.instructions.md"]
   },
   "dependencies": {
-    "cli": ["gh", "php"]
+    "cli": ["gh", "php"],
+    "agents": ["code-review"]
   }
 }
