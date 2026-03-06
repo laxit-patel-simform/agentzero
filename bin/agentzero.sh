@@ -29,6 +29,42 @@ else
     mkdir -p "$CORE_DIR"
 fi
 
+function log_info() { echo -e "${SET_COLOR_CYAN}info${SET_COLOR_RESET}  $1"; }
+function log_success() { echo -e "${SET_COLOR_SUCCESS}success${SET_COLOR_RESET} $1"; }
+function log_error() { echo -e "${SET_COLOR_ERROR}error${SET_COLOR_RESET}   $1"; }
+
+# Robust fetcher for bootstrapping modules
+function bootstrap_fetch() {
+    local file=$1
+    local target=$2
+    
+    # 1. Try gh api (best for private repos)
+    if command -v gh >/dev/null 2>&1; then
+        gh api -H "Accept: application/vnd.github.v3.raw" "/repos/$REPO_USER/$REPO_NAME/contents/$file?ref=$REPO_BRANCH" > "$target" 2>/dev/null
+        if [ $? -eq 0 ] && [ -s "$target" ] && ! grep -q "404: Not Found" "$target"; then return 0; fi
+    fi
+    
+    # 2. Fallback to curl
+    curl -sSL "$REPO_RAW_URL/$file" > "$target"
+    if [ -s "$target" ] && ! grep -q "404: Not Found" "$target"; then return 0; fi
+    
+    return 1
+}
+
+# 1. Bootstrap the core modules
+MODULES=("remote.sh" "manifest.sh" "resolver.sh" "installer.sh")
+for mod in "${MODULES[@]}"; do
+    if [ "$MODE" == "DEV" ]; then
+        source "$CORE_DIR/$mod"
+    else
+        if ! bootstrap_fetch "bin/core/$mod" "$CORE_DIR/$mod"; then
+            log_error "Failed to fetch core module: $mod from $REPO_USER/$REPO_NAME ($REPO_BRANCH)"
+            exit 1
+        fi
+        source "$CORE_DIR/$mod"
+    fi
+done
+
 function show_logo() {
     echo -e "${SET_COLOR_PURPLE}${SET_COLOR_BOLD}"
     echo "  █████╗  ██████╗ ███████╗███╗   ██╗████████╗███████╗███████╗██████╗  ██████╗ "
@@ -39,36 +75,6 @@ function show_logo() {
     echo " ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ "
     echo -e "${SET_COLOR_RESET}"
 }
-
-function log_info() { echo -e "${SET_COLOR_CYAN}info${SET_COLOR_RESET}  $1"; }
-function log_success() { echo -e "${SET_COLOR_SUCCESS}success${SET_COLOR_RESET} $1"; }
-function log_error() { echo -e "${SET_COLOR_ERROR}error${SET_COLOR_RESET}   $1"; }
-
-# 1. Source Remote Module first to enable fetching others
-if [ "$MODE" == "DEV" ]; then
-    source "$CORE_DIR/remote.sh"
-else
-    # Bootstrap remote module via curl
-    curl -sSL "$REPO_RAW_URL/bin/core/remote.sh" > "$CORE_DIR/remote.sh"
-    if grep -q "404: Not Found" "$CORE_DIR/remote.sh" || [ ! -s "$CORE_DIR/remote.sh" ]; then
-        log_error "Failed to bootstrap remote module (404). Please wait a moment for GitHub cache to update."
-        exit 1
-    fi
-    source "$CORE_DIR/remote.sh"
-fi
-
-# 2. Fetch/Source remaining modules
-MODULES=("manifest.sh" "resolver.sh" "installer.sh")
-for mod in "${MODULES[@]}"; do
-    if [ "$MODE" == "REMOTE" ]; then
-        fetch_remote_file "bin/core/$mod" > "$CORE_DIR/$mod"
-        if grep -q "404: Not Found" "$CORE_DIR/$mod" || [ ! -s "$CORE_DIR/$mod" ]; then
-            log_error "Failed to fetch module $mod (404)."
-            exit 1
-        fi
-    fi
-    source "$CORE_DIR/$mod"
-done
 
 function show_help() {
     echo -e "${SET_COLOR_BOLD}AgentZero: Meta-Agent Deployer${SET_COLOR_RESET}"
