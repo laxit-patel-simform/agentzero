@@ -23,7 +23,7 @@ function deploy_single_agent() {
         
         # Local copy
         mkdir -p .github
-        cp -rv "$agent_path/stubs/.github/." .github/
+        cp -rv "$agent_path/stubs/.github/"* .github/
     else
         manifest_json=$(fetch_remote_file "agents/$agent_id/manifest.json")
         if [ -z "$manifest_json" ]; then log_error "Manifest for '$agent_id' not found."; exit 1; fi
