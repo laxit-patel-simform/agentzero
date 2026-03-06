@@ -1,0 +1,10 @@
+{
+  "agents": [
+    {
+      "id": "example-php-agent",
+      "name": "Example PHP Agent",
+      "description": "A boilerplate agent for PHP developers.",
+      "version": "1.0.0"
+    }
+  ]
+}

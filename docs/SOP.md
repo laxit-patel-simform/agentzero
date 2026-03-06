@@ -1,0 +1,81 @@
+# Standard Operating Procedures (SOP)
+
+This document outlines the two primary workflows of the `awesome-copilot-opensource` project: **Intelligence Engineering** (for contributors) and **Deployment** (for consumers).
+
+---
+
+## 🏗️ SOP: Intelligence Engineering (The Contributor)
+*Goal: Build, refine, and ship a high-quality Agent for the PHP community.*
+
+```mermaid
+sequenceDiagram
+    participant E as Intelligence Engineer
+    participant R as AgentZero Repo
+    participant V as Verify (CI/CD)
+    
+    E->>R: Scaffold agents/<id>/
+    E->>R: Write Stubs (Agents, Prompts)
+    E->>R: Register in manifest.json & registry.json
+    E->>V: Run make verify
+    V-->>E: Pass/Fail
+    E->>R: Push to main
+```
+
+1.  **Initialize Agent:** Create a folder in `agents/` (e.g., `agents/php-testing/`).
+2.  **Scaffold Structure:** Create the mandatory sub-directories:
+    - `agents/<id>/manifest.json`
+    - `agents/<id>/stubs/.github/agents/`
+    - `agents/<id>/stubs/.github/prompts/`
+    - `agents/<id>/stubs/.github/instructions/`
+3.  **Engineer Intelligence:** Write the expert prompts and orchestration logic in the markdown files within `stubs/`.
+4.  **Register:**
+    - Fill out the `manifest.json` with metadata and file lists.
+    - Add the agent ID and details to the root `registry.json`.
+5.  **Verify Integrity:** Run `make verify` from the project root. All tests must pass.
+6.  **Merge:** Submit a PR using **Conventional Commits** style.
+
+---
+
+## 🚀 SOP: Consumer Deployment (The User)
+*Goal: Activate AgentZero and deploy a specific Intelligence Agent into your PHP project.*
+
+```mermaid
+graph TD
+    A[User Project] --> B{AgentZero Remote}
+    B -->|Fetch Registry| C[registry.json]
+    B -->|Fetch Intelligence| D[manifest.json]
+    B -->|Fetch Assets| E[Stubs]
+    E -->|Deploy| A
+    A --> F[Restart IDE Assistant]
+    F --> G[Project-Aware AI Ready]
+```
+
+### Step 1: Discover (Remote Call)
+The user doesn't clone this repo. They interact with it remotely:
+```bash
+curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- list
+```
+
+**Tip: Deploying from your own fork or branch**
+You can override the source by setting environment variables:
+```bash
+# Example: Deploy from your own personal fork and testing-branch
+export AGENTZERO_USER="your-username"
+export AGENTZERO_BRANCH="testing-branch"
+curl -sSL https://raw.githubusercontent.com/$AGENTZERO_USER/awesome-copilot-opensource/$AGENTZERO_BRANCH/bin/agentzero.sh | bash -s -- list
+```
+
+### Step 2: Health Check
+Run the "doctor" command to ensure the local environment is ready:
+```bash
+curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- doctor
+```
+
+### Step 3: Deploy
+Choose an agent ID from the list and deploy it into your project's `.github/` folder:
+```bash
+curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- deploy <agent-id>
+```
+
+### Step 4: Activate
+Restart your IDE's AI assistant (Copilot Chat, Gemini, etc.). The new specialized agents and prompts are now active in your workspace.
