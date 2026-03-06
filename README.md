@@ -229,13 +229,20 @@ chmod +x agentzero.sh
 # 2. Browse available intelligence
 ./agentzero.sh list
 
-# 3. Deploy an agent (e.g., Code Review)
-./agentzero.sh deploy php-code-review
+# 3. Add an agent (e.g., Code Review)
+./agentzero.sh add code-review
+
+# 4. Remove an agent
+./agentzero.sh remove code-review
 ```
 
 ### ⚡ One-Liner (Convenient)
 ```bash
+# List all agents
 curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- list
+
+# Add an agent
+curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- add code-review
 ```
 
 ## 🛠️ Internal Maintenance (For Contributors)

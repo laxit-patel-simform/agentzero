@@ -75,11 +75,17 @@ Run the "doctor" command to ensure the local environment is ready:
 curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- doctor
 ```
 
-### Step 3: Deploy
-Choose an agent ID from the list and deploy it into your project's `.github/` folder:
+### Step 3: Add
+Choose an agent ID from the list and add it into your project's `.github/` folder:
 ```bash
-curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- deploy <agent-id>
+curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- add <agent-id>
 ```
 
-### Step 4: Activate
+### Step 4: Remove
+If you want to clean up an agent's files:
+```bash
+curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- remove <agent-id>
+```
+
+### Step 5: Activate
 Restart your IDE's AI assistant (Copilot Chat, Gemini, etc.). The new specialized agents and prompts are now active in your workspace.
