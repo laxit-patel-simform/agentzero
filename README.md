@@ -238,6 +238,12 @@ chmod +x agentzero.sh
 curl -sSL https://raw.githubusercontent.com/simform-git/awesome-copilot-opensource/main/bin/agentzero.sh | bash -s -- list
 ```
 
+## 🛠️ Internal Maintenance (For Contributors)
+
+This repository includes a set of **Meta-Agents** to help maintain project standards:
+- **Assimilator Agent:** An internal agent that ensures all new contributions follow the strict "Intelligence + Stubs" architecture.
+- **`/assimilate` Command:** A convenience command to automatically generate manifests and registry entries for new agents.
+
 ---
 
 ## 📂 Resources

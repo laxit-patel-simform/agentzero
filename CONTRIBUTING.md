@@ -22,7 +22,8 @@ make doctor
 ## 🏗️ Workflow: Intelligence Engineering (SOP)
 
 1.  **Initialize Agent:** Create a folder in `agents/` (e.g., `agents/php-testing/`).
-2.  **Scaffold Stubs:** Every agent must have a `stubs/` directory mirroring the target `.github/` structure.
+2.  **Assimilate (NEW):** Use the `/assimilate` Copilot command (located in `.github/prompts/`) to automatically generate your `manifest.json` and registry entries. This ensures you follow the "Intelligence + Stubs" standard.
+3.  **Scaffold Stubs:** Every agent must have a `stubs/` directory mirroring the target `.github/` structure.
 3.  **Define Manifest:** Fill out `agents/<id>/manifest.json` with metadata.
 4.  **Register:** Add your agent to the root `registry.json`.
 5.  **Verify:** Run `make verify` to ensure structural integrity.

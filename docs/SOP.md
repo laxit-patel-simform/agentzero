@@ -22,7 +22,11 @@ sequenceDiagram
 ```
 
 1.  **Initialize Agent:** Create a folder in `agents/` (e.g., `agents/php-testing/`).
-2.  **Scaffold Structure:** Create the mandatory sub-directories:
+2.  **Assimilate (Recommended):** Use the internal **Assimilator Meta-Agent** to automate the structure.
+    - Highlight your new agent files in your IDE.
+    - Run the `/assimilate` command (available in the `.github/prompts/` directory).
+    - The Meta-Agent will generate the `manifest.json`, suggest the correct `stubs/` structure, and provide the `registry.json` entry.
+3.  **Scaffold Structure:** If doing it manually, create the mandatory sub-directories:
     - `agents/<id>/manifest.json`
     - `agents/<id>/stubs/.github/agents/`
     - `agents/<id>/stubs/.github/prompts/`

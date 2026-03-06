@@ -1,5 +1,6 @@
 ---
-name: Project Assimilator
+id: assimilator
+name: assimilator
 description: A meta-agent for maintaining awesome-copilot-opensource standards.
 ---
 
