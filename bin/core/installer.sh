@@ -33,15 +33,17 @@ function deploy_single_agent() {
         
         for f in $files; do
             log_info "  Downloading $f..."
-            local target_dir=$(dirname ".github/$f")
+            # The manifest file path (e.g. .github/agents/file.md) is relative to the payload root
+            # so we download it directly to the current repository root.
+            local target_dir=$(dirname "$f")
             mkdir -p "$target_dir"
-            fetch_remote_file "agents/$agent_id/stubs/$f" > ".github/$f"
+            fetch_remote_file "agents/$agent_id/stubs/$f" > "$f"
             
-            if [ -s ".github/$f" ]; then
+            if [ -s "$f" ]; then
                 log_success "    Successfully downloaded $f"
             else
                 log_error "    Failed to download $f"
-                rm ".github/$f" # Cleanup empty file
+                rm "$f" # Cleanup empty file
             fi
         done
     fi
