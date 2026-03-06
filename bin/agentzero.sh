@@ -81,7 +81,7 @@ function list_agents() {
 
         printf "%-25s %-10s %-40s\n" "ID" "VERSION" "DESCRIPTION"
         echo "--------------------------------------------------------------------------------"
-        php -r "\$r = json_decode('$registry_json', true); if (isset(\$r['agents'])) { foreach (\$r['agents'] as \$a) { printf(\"${SET_COLOR_BOLD}%-25s${SET_COLOR_RESET} %-10s %-40s\n\", \$a['id'], \$a['version'], \$a['description']); } }"
+        echo "$registry_json" | php -r "\$r = json_decode(file_get_contents('php://stdin'), true); if (isset(\$r['agents'])) { foreach (\$r['agents'] as \$a) { printf(\"${SET_COLOR_BOLD}%-25s${SET_COLOR_RESET} %-10s %-40s\n\", \$a['id'], \$a['version'], \$a['description']); } }"
     fi
     echo ""
 }
@@ -108,7 +108,7 @@ function deploy_agent() {
         fi
 
         # Extract files from manifest and download each
-        local files=$(php -r "\$m = json_decode('$manifest_json', true); if (isset(\$m['files'])) { foreach (\$m['files'] as \$type => \$list) { foreach (\$list as \$f) echo \"\$f\n\"; } }")
+        local files=$(echo "$manifest_json" | php -r "\$m = json_decode(file_get_contents('php://stdin'), true); if (isset(\$m['files'])) { foreach (\$m['files'] as \$type => \$list) { foreach (\$list as \$f) echo \"\$f\n\"; } }")
         
         for f in $files; do
             log_info "  Downloading $f..."
