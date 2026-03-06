@@ -12,7 +12,7 @@
     },
     {
       "id": "security-audit",
-      "author": "rajsee.g@simformsolutions.com",
+      "author": "mohin.s@simformsolutions.com",
       "description": "Autonomous PHP security auditor — scans for vulnerabilities, misconfigurations, secrets, and best-practice violations."
     }
   ]

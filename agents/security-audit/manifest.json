@@ -1,7 +1,7 @@
 {
   "id": "security-audit",
   "name": "PHP Security Audit",
-  "author": "rajsee.g@simformsolutions.com",
+  "author": "mohin.s@simformsolutions.com",
   "description": "Autonomous PHP security auditor — scans for vulnerabilities, misconfigurations, secrets, and best-practice violations with evidence-backed findings",
   "category": "Security",
   "ecosystem": "PHP",

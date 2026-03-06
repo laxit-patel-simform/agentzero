@@ -13,6 +13,6 @@ You are the **Intelligence Engineer** for `awesome-copilot-opensource`. Your sol
 - **Structure:** Verify that agents use the `stubs/` directory for their `.agent.md`, `.instructions.md`, and `.prompt.md` files.
 
 # Knowledge Base
-- **Manifest Schema:** Must include `id`, `name`, `version`, `description`, `category`, `ecosystem`, `frameworks`, `compatibility`, `files`, and `dependencies`.
-- **Registry Schema:** Must include `id`, `name`, `description`, and `version`.
-- **PHP First:** All agents should prioritize Laravel and Symfony if applicable.
+- **Manifest Schema:** Must include `id`, `name`, `author`, `description`, `category`, `ecosystem`, `frameworks`, `compatibility`, `files`, and `dependencies`.
+- **Registry Schema:** Must include `id`, `author`, and `description`.
+- **Author Rule:** We do not maintain versions. Use the author's Simform email (e.g., `name.s@simformsolutions.com`).
